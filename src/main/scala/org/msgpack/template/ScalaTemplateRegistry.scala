@@ -1,6 +1,5 @@
-package org.msgpack
+package org.msgpack.template
 
-import template._
 import builder._
 import collection.mutable._
 
@@ -69,11 +68,13 @@ class ScalaTemplateRegistry extends TemplateRegistry(null){
   }
 }
 
-class ScalaTemplateBuilderChain(registry : TemplateRegistry) extends TemplateBuilderChain(registry){
+class ScalaTemplateBuilderChain(registry : TemplateRegistry,forceReflectionMode : Boolean) extends TemplateBuilderChain(registry){
+
+  def this(_registry : TemplateRegistry) = this(_registry,false)
 
   private def enableDynamicCodeGeneration: Boolean = {
     try {
-      return !System.getProperty("java.vm.name").equals("Dalvik")
+      return !forceReflectionMode && !System.getProperty("java.vm.name").equals("Dalvik")
     }
     catch {
       case e: Exception => {
@@ -105,6 +106,7 @@ class ScalaTemplateBuilderChain(registry : TemplateRegistry) extends TemplateBui
       templateBuilders.add(new JavassistBeansTemplateBuilder(registry))
     }
     else {
+      templateBuilders.add(new ReflectionScalaTemplateBuilder(registry))
       val builder = new ReflectionTemplateBuilder(registry)
       templateBuilders.add(builder)
       templateBuilders.add(new OrdinalEnumTemplateBuilder(registry))

@@ -12,7 +12,19 @@ import org.specs.matcher.Matcher
  */
 
 @RunWith(classOf[JUnitSuiteRunner])
-class PatternTest extends Specification with JUnit{
+class JavassistPatternTest extends PatternTestBase(ScalaMessagePack)
+
+/**
+ *
+ */
+@RunWith(classOf[JUnitSuiteRunner])
+class ReflectionPatternTest extends PatternTestBase(ScalaMessagePackForReflection)
+
+class PatternTestBase(messagePack : ScalaMessagePackWrapper) extends Specification with JUnit{
+
+  import messagePack._
+
+
 
   "PrimitiveTypes" should{
     "encode / decode" in{
@@ -37,8 +49,8 @@ class PatternTest extends Specification with JUnit{
       val decoded = checkOn(o,"zero","one","two","three")
 
       // confirm field order
-      val data = ScalaMessagePack.write(o)
-      val mirror = ScalaMessagePack.read[IndexingMirror](data)
+      val data = pack(o)
+      val mirror = unpack[IndexingMirror](data)
       decoded must hasEqualProps(mirror).on("zero","one","two","three")
     }
   }
@@ -67,7 +79,7 @@ class PatternTest extends Specification with JUnit{
     "throw error if name is null" in{
       val o = new Options
       o.name = null
-      ScalaMessagePack.write(o) must throwA[MessageTypeException]
+      pack(o) must throwA[MessageTypeException]
     }
     "ignore @ignore" in{
       val o = new Options
@@ -114,8 +126,8 @@ class PatternTest extends Specification with JUnit{
 
 
   def checkOn[T <: AnyRef](obj : T , propNames : String*)(implicit manifest : Manifest[T]) : T = {
-    val data = ScalaMessagePack.write(obj)
-    val decode = ScalaMessagePack.read[T](data)
+    val data = pack(obj)
+    val decode = unpack[T](data)
     decode must hasEqualProps(obj).on(propNames :_*)
     decode
   }

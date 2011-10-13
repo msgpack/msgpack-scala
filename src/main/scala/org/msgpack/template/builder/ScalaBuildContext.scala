@@ -225,6 +225,7 @@ class ScalaBuildContext(builder : JavassistScalaTemplateBuilder) extends BuildCo
     }catch{
       case e : ClassNotFoundException =>
       case e : NoSuchMethodException =>
+      case e : NoSuchFieldException =>
     }
     throw new MessageTypeException("Can't find plain constructor or companion object")
 
