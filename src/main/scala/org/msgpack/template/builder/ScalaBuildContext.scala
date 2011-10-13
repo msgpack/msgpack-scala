@@ -53,17 +53,25 @@ class ScalaBuildContext(builder : JavassistScalaTemplateBuilder) extends BuildCo
   def writeTemplate(targetClass: Class[_],
                     entries: Array[ScalaFieldEntry],
                     templates: Array[Template[_]], directoryName: String) = {}
-
+  /* 0.6.1
   def loadTemplate(targetClass: Class[_]) = {
     this.originalClass = targetClass
+    load(originalClassName)
+  }*/
+
+  def loadTemplate(targetClass: Class[_],
+                   entries: Array[ScalaFieldEntry],
+                   templates: Array[Template[_]]) = {
+    this.originalClass = targetClass
+    this.templates = templates
+    this.entries = entries
     load(originalClassName)
   }
 
 
 
+
   // build
-
-
 
 
   def setSuperClass() = {
