@@ -18,6 +18,7 @@
 package org.msgpack
 
 import `type`.Value
+import conversion.ValueConversions
 import template._
 import collection.mutable.{MutableList, LinkedList}
 import collection.mutable.{Map => MMap, HashMap => MHashMap}
@@ -113,42 +114,6 @@ trait ScalaMessagePackWrapper{
   }
 }
 
-/**
- * Defines Value implicit conversions
- */
-trait ValueConversions{
-  // implicit Value conversions
-
-  implicit def valueToByte(value : Value) : Byte = {
-    value.asIntegerValue().getByte
-  }
-  implicit def valueToShort(value : Value) : Short = {
-    value.asIntegerValue().getShort
-  }
-  implicit def valueToInt(value : Value) : Int = {
-    value.asIntegerValue().getInt
-  }
-  implicit def valueToLong(value : Value) : Long = {
-    value.asIntegerValue().getLong
-  }
-  implicit def valueToString(value : Value) : String = {
-    value.asRawValue().getString()
-  }
-  implicit def valueToDouble(value : Value) : Double = {
-    value.asFloatValue.getDouble
-  }
-  implicit def valueToFloat(value : Value) : Float = {
-    value.asFloatValue.getFloat
-  }
-  implicit def valueToBool(value : Value) : Boolean = {
-    value.asBooleanValue.getBoolean
-  }
-  implicit def valueToArray(value : Value) : Array[Value] = {
-    value.asArrayValue().getElementArray
-  }
-
-
-}
 
 /**
  * Message pack implementation for scala

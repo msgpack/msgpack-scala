@@ -17,6 +17,7 @@
 //
 package org.msgpack
 
+import `type`.Value
 import annotation.Message
 import org.junit.runner.RunWith
 import org.specs.runner.{JUnit, JUnitSuiteRunner}
@@ -55,6 +56,45 @@ class UsageTest extends Specification with JUnit{
       recover.roles.toList must_== user.roles.toList
       recover.profile.gender must_== user.profile.gender
 
+    }
+
+  }
+
+  "Use Value" should{
+    "write object then read as Value" in {
+      // import implicit conversions
+      import ScalaMessagePack._
+      val user = new User
+      user.id = 5343
+      user.name = "rucia"
+      user.roles = Array("user")
+      user.profile.gender = 2
+
+      val data = pack(user)
+      val value = readAsValue(data)
+
+      val id : Long = value(0) // valueToArray then valueToInt
+      id must_== user.id
+      val name : String = value(1)// valueToArray then valueToStr
+      name must_== user.name
+
+      val roles : Array[String] = value(2).asArray // valueToRichValue then call asArray
+      roles.toList must_== user.roles.toList
+
+      val gender : Int = value(3)(0) // valueToArray then call apply(Int) then valueToInt
+      gender must_== user.profile.gender
+
+    }
+    "write value then read as object" in {
+      import ScalaMessagePack._
+      val v = List(1242,"kotori",Array("user","admin"),List(2))
+      val data = writeV(v)
+
+      val decoded : User = unpack[User](data)
+      decoded.id must_== v(0)
+      decoded.name must_== v(1)
+      decoded.roles.toList must_== v(2).asInstanceOf[Array[String]].toList
+      decoded.profile.gender must_== v(3).asInstanceOf[List[Int]](0)
     }
 
   }

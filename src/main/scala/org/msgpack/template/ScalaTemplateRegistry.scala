@@ -19,6 +19,9 @@ package org.msgpack.template
 
 import builder._
 import collection.mutable._
+import java.math.BigInteger
+import java.nio.ByteBuffer
+import org.msgpack.`type`.Value
 
 /**
  * 
@@ -32,6 +35,7 @@ class ScalaTemplateRegistry extends TemplateRegistry(null){
 
   {
     def anyTemplate[T] = AnyTemplate.getInstance(this).asInstanceOf[Template[T]]
+
 
     register(new ImmutableListTemplate[Any](anyTemplate))
     register(new ImmutableMapTemplate(anyTemplate,anyTemplate))

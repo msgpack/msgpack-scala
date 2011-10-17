@@ -53,7 +53,9 @@ class ImmutableListTemplate[T](elementTemplate : Template[T]) extends AbstractTe
     }
 
     packer.writeArrayBegin(v.size)
-    v.foreach(e => elementTemplate.write(packer,e,required))
+    v.foreach(e => {
+      elementTemplate.write(packer,e,required)
+    })
     packer.writeArrayEnd()
 
   }

@@ -17,6 +17,7 @@
 //
 package org.msgpack
 
+import conversion.ValueConversions
 import template.{ScalaTemplateBuilderChain, ScalaTemplateRegistry}
 
 /**
