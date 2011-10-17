@@ -109,20 +109,16 @@ class ImplicitConversionTest extends Specification with JUnit{
     "nested list" in{
       import ScalaMessagePack._
 
-      /*
-        You must declare [Value] when you construct nested list or map.
-        Because implicit conversions can't convert correctly.
-       */
-      val v = List(List(1,2,3) , List[Value](List(4,5) , List(6,7)))
+      val v = List(List(1,2,3) , List(List(4,5) , List(6,7)))
       val data = writeV(v)
       val decoded = readAsValue(data)
       val richValue : RichValue = decoded
       val firstList = richValue(0).asList[Int]
       firstList must_== v(0)
       val secondList = richValue(1)(0).asList[Int]
-      secondList must_== v(1).asInstanceOf[List[Value]].apply(0).asList[Int]
+      secondList must_== v(1)(0)
       val thirdList = richValue(1)(1).asList[Int]
-      thirdList must_== v(1).asInstanceOf[List[Value]].apply(1).asList[Int]
+      thirdList must_== v(1)(1)
 
     }
 

@@ -35,9 +35,10 @@ class ScalaTemplateRegistry extends TemplateRegistry(null){
 
 
   {
-    def anyTemplate[T] = AnyTemplate.getInstance(this).asInstanceOf[Template[T]]
+    //def anyTemplate[T] = AnyTemplate.getInstance(this).asInstanceOf[Template[T]]
 
-
+    val at = new AnyTemplate[Any](this)
+    def anyTemplate[T] = at.asInstanceOf[Template[T]]
     register(new ImmutableListTemplate[Any](anyTemplate))
     register(new ImmutableMapTemplate(anyTemplate,anyTemplate))
     register(new DoubleLinkedListTemplate(anyTemplate))
