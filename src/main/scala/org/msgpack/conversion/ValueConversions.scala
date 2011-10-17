@@ -106,6 +106,117 @@ trait ValueConversions{
     ValueFactory.createArrayValue(array)
   }
 
+  implicit def tuple2ToValue( t : Tuple2[Any,Any]) : Value = {
+
+    val array = new Array[Value](2)
+    var index = 0
+    array(index) = objToValue(t._1);index += 1
+    array(index) = objToValue(t._2);index += 1
+    ValueFactory.createArrayValue(array)
+  }
+
+  implicit def tuple3ToValue( t : Tuple3[Any,Any,Any]) : Value = {
+
+    val array = new Array[Value](3)
+    var index = 0
+    array(index) = objToValue(t._1);index += 1
+    array(index) = objToValue(t._2);index += 1
+    array(index) = objToValue(t._3);index += 1
+    ValueFactory.createArrayValue(array)
+  }
+
+  implicit def tuple4ToValue( t : Tuple4[Any,Any,Any,Any]) : Value = {
+
+    val array = new Array[Value](4)
+    var index = 0
+    array(index) = objToValue(t._1);index += 1
+    array(index) = objToValue(t._2);index += 1
+    array(index) = objToValue(t._3);index += 1
+    array(index) = objToValue(t._4);index += 1
+    ValueFactory.createArrayValue(array)
+  }
+
+  implicit def tuple5ToValue( t : Tuple5[Any,Any,Any,Any,Any]) : Value = {
+
+    val array = new Array[Value](5)
+    var index = 0
+    array(index) = objToValue(t._1);index += 1
+    array(index) = objToValue(t._2);index += 1
+    array(index) = objToValue(t._3);index += 1
+    array(index) = objToValue(t._4);index += 1
+    array(index) = objToValue(t._5);index += 1
+    ValueFactory.createArrayValue(array)
+  }
+
+  implicit def tuple6ToValue( t : Tuple6[Any,Any,Any,Any,Any,Any]) : Value = {
+
+    val array = new Array[Value](6)
+    var index = 0
+    array(index) = objToValue(t._1);index += 1
+    array(index) = objToValue(t._2);index += 1
+    array(index) = objToValue(t._3);index += 1
+    array(index) = objToValue(t._4);index += 1
+    array(index) = objToValue(t._5);index += 1
+    array(index) = objToValue(t._6);index += 1
+    ValueFactory.createArrayValue(array)
+  }
+
+  implicit def tuple7ToValue( t : Tuple7[Any,Any,Any,Any,Any,Any,Any]) : Value = {
+    val array = new Array[Value](7)
+    var index = 0
+    array(index) = objToValue(t._1);index += 1
+    array(index) = objToValue(t._2);index += 1
+    array(index) = objToValue(t._3);index += 1
+    array(index) = objToValue(t._4);index += 1
+    array(index) = objToValue(t._5);index += 1
+    array(index) = objToValue(t._6);index += 1
+    array(index) = objToValue(t._7);index += 1
+    ValueFactory.createArrayValue(array)
+  }
+  implicit def tuple8ToValue( t : Tuple8[Any,Any,Any,Any,Any,Any,Any,Any]) : Value = {
+    val array = new Array[Value](8)
+    var index = 0
+    array(index) = objToValue(t._1);index += 1
+    array(index) = objToValue(t._2);index += 1
+    array(index) = objToValue(t._3);index += 1
+    array(index) = objToValue(t._4);index += 1
+    array(index) = objToValue(t._5);index += 1
+    array(index) = objToValue(t._6);index += 1
+    array(index) = objToValue(t._7);index += 1
+    array(index) = objToValue(t._8);index += 1
+    ValueFactory.createArrayValue(array)
+  }
+  implicit def tuple9ToValue( t : Tuple9[Any,Any,Any,Any,Any,Any,Any,Any,Any]) : Value = {
+    val array = new Array[Value](9)
+    var index = 0
+    array(index) = objToValue(t._1);index += 1
+    array(index) = objToValue(t._2);index += 1
+    array(index) = objToValue(t._3);index += 1
+    array(index) = objToValue(t._4);index += 1
+    array(index) = objToValue(t._5);index += 1
+    array(index) = objToValue(t._6);index += 1
+    array(index) = objToValue(t._7);index += 1
+    array(index) = objToValue(t._8);index += 1
+    array(index) = objToValue(t._9);index += 1
+    ValueFactory.createArrayValue(array)
+  }
+
+  implicit def tuple10ToValue( t : Tuple10[Any,Any,Any,Any,Any,Any,Any,Any,Any,Any]) : Value = {
+    val array = new Array[Value](10)
+    var index = 0
+    array(index) = objToValue(t._1);index += 1
+    array(index) = objToValue(t._2);index += 1
+    array(index) = objToValue(t._3);index += 1
+    array(index) = objToValue(t._4);index += 1
+    array(index) = objToValue(t._5);index += 1
+    array(index) = objToValue(t._6);index += 1
+    array(index) = objToValue(t._7);index += 1
+    array(index) = objToValue(t._8);index += 1
+    array(index) = objToValue(t._9);index += 1
+    array(index) = objToValue(t._10);index += 1
+    ValueFactory.createArrayValue(array)
+  }
+
   implicit def listToValue( list : List[Any]) : Value = {
     val array = new Array[Value](list.size)
     var i = 0

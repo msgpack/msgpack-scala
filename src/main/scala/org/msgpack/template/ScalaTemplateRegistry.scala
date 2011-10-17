@@ -22,6 +22,7 @@ import collection.mutable._
 import java.math.BigInteger
 import java.nio.ByteBuffer
 import org.msgpack.`type`.Value
+import org.msgpack.template.TemplateRegistry._
 
 /**
  * 
@@ -51,6 +52,7 @@ class ScalaTemplateRegistry extends TemplateRegistry(null){
     register(classOf[scala.collection.mutable.Seq[_]],
       new LinkedListTemplate(anyTemplate))
     register(classOf[Seq[_]],new ImmutableListTemplate(anyTemplate))
+    register(classOf[scala.collection.immutable.List[_]],new ImmutableListTemplate[Any](anyTemplate))
 
     // generics
     registerGeneric(classOf[scala.collection.immutable.List[_]],new GenericImmutableListTemplate())

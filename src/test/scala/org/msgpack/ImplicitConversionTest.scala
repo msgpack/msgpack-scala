@@ -19,6 +19,7 @@
 package org.msgpack
 
 import `type`.Value
+import conversion.RichValue
 import org.junit.runner.RunWith
 import org.specs.Specification
 import org.specs.runner.{JUnit, JUnitSuiteRunner}
@@ -58,6 +59,27 @@ class ImplicitConversionTest extends Specification with JUnit{
       val bool : Boolean = decoded(6)
       bool must_== v(6)
     }
+
+    "convert tuple" in{
+      import ScalaMessagePack._
+      writeV( (1,"a")) must notBeNull
+      writeV( (1,"a",false)) must notBeNull
+      writeV( (1,"a",false,0.1)) must notBeNull
+      writeV( (1,"a",false,2  ,"")) must notBeNull
+      writeV( (1,"a",false,2  ,"","hoge")) must notBeNull
+      writeV( (1,"a",false,2  ,"","fuga","hoge")) must notBeNull
+      writeV( (1,"a",false,2  ,"","fuga","hoge",false)) must notBeNull
+      writeV( (1,"a",false,2  ,"","fuga","hoge",false,"a")) must notBeNull
+      writeV( (1,"a",false,2  ,"","fuga","hoge",false,"a","b")) must notBeNull
+      //writeV( (1,"a",false,2  ,"","fuga","hoge",false,"a","b",10)) must notBeNull //tuple10
+      val data = writeV( (1,"a",false))
+      val decoded = readAsValue(data)
+      decoded(0).asInt must_== 1
+      decoded(1).asString must_== "a"
+      decoded(2).asBool must_== false
+
+    }
+
     "convert list,map" in{
       import ScalaMessagePack._
 
@@ -84,7 +106,29 @@ class ImplicitConversionTest extends Specification with JUnit{
 
     }
 
+    "nested list" in{
+      import ScalaMessagePack._
+
+      /*
+        You must declare [Value] when you construct nested list or map.
+        Because implicit conversions can't convert correctly.
+       */
+      val v = List(List(1,2,3) , List[Value](List(4,5) , List(6,7)))
+      val data = writeV(v)
+      val decoded = readAsValue(data)
+      val richValue : RichValue = decoded
+      val firstList = richValue(0).asList[Int]
+      firstList must_== v(0)
+      val secondList = richValue(1)(0).asList[Int]
+      secondList must_== v(1).asInstanceOf[List[Value]].apply(0).asList[Int]
+      val thirdList = richValue(1)(1).asList[Int]
+      thirdList must_== v(1).asInstanceOf[List[Value]].apply(1).asList[Int]
+
+    }
+
 
   }
+
+
 
 }

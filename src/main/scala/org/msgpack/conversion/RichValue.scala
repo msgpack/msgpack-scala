@@ -70,4 +70,35 @@ class RichValue(messagePack : MessagePack,value : Value){
       messagePack.convert(v(0),keyC) -> messagePack.convert(v(1),valueC)
     }).toSeq:_*)
   }
+  override def toString() : String = {
+    value.toString()
+  }
+
+
+  def asByte() : Byte = {
+    value.asIntegerValue().getByte
+  }
+  def asShort() : Short = {
+    value.asIntegerValue().getShort
+  }
+  def asInt() : Int = {
+    value.asIntegerValue().getInt
+  }
+  def asLong() : Long = {
+    value.asIntegerValue().getLong
+  }
+  def asDouble() : Double = {
+    value.asFloatValue.getDouble
+  }
+  def asFloat() : Float = {
+    value.asFloatValue.getFloat
+  }
+  def asBool() : Boolean = {
+    value.asBooleanValue.getBoolean
+  }
+  def asString() : String = {
+    value.asRawValue().getString()
+  }
+
+
 }
