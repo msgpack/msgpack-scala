@@ -72,6 +72,25 @@ class CollectionPackTest extends Specification with JUnit  {
 
   }
 
+  "Tuple template" should{
+    "convert / deconvert" in {
+
+      val c = new ClassWithTuple()
+      c.t1 = Tuple1[String]("fuga")
+      c.t2 = ("a",1)
+      c.t3 = ("b",5,0.4)
+
+      val bytes = ScalaMessagePack.write(c)
+      val des = ScalaMessagePack.read[ClassWithTuple](bytes)
+
+      des.t1 must_== c.t1
+      des.t2 must_== c.t2
+      des.t3 must_== c.t3
+
+
+    }
+  }
+
 
 
 

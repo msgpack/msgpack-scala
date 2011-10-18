@@ -28,3 +28,4 @@ class GenericImmutableListTemplate extends GenericTemplate{
     new ImmutableListTemplate[Any](params(0).asInstanceOf[Template[Any]])
   }
 }
+

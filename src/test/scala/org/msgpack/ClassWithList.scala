@@ -23,7 +23,7 @@ package org.msgpack;
  * Time: 2:13
  */
 
-import annotation.MessagePackMessage
+import annotation.{Message, MessagePackMessage}
 import collection.mutable.{ListBuffer, MutableList, LinkedList}
 
 @MessagePackMessage
@@ -37,4 +37,23 @@ class ClassWithList {
   var mutable3 : ListBuffer[String] = ListBuffer.empty
 
   //var tuple2 : (String,String) = (null,null)
+}
+
+/**
+ * if you want to use tuple for primitive types, you must use java.lang.*.
+ * Because Tuple never preserves primitive types(scala.Int , Byte and so on) to reflection.(scala's bug?)
+ * for example
+ * {{{
+ *   var wrong : (String,Int) = null
+ * }}}
+ * is become ParameterizedType<String,java.lang.Object> on the reflection
+ *
+ */
+@Message
+class ClassWithTuple{
+
+  var t1 : Tuple1[String] = null
+  var t2 : Tuple2[String,java.lang.Integer] = null
+  var t3 : Tuple3[String,java.lang.Integer,java.lang.Double] = null
+
 }

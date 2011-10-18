@@ -64,15 +64,27 @@ class ImplicitConversionTest extends Specification with JUnit{
       import ScalaMessagePack._
       writeV( (1,"a")) must notBeNull
       writeV( (1,"a",false)) must notBeNull
-      writeV( (1,"a",false,0.1)) must notBeNull
-      writeV( (1,"a",false,2  ,"")) must notBeNull
-      writeV( (1,"a",false,2  ,"","hoge")) must notBeNull
-      writeV( (1,"a",false,2  ,"","fuga","hoge")) must notBeNull
-      writeV( (1,"a",false,2  ,"","fuga","hoge",false)) must notBeNull
-      writeV( (1,"a",false,2  ,"","fuga","hoge",false,"a")) must notBeNull
-      writeV( (1,"a",false,2  ,"","fuga","hoge",false,"a","b")) must notBeNull
-      //writeV( (1,"a",false,2  ,"","fuga","hoge",false,"a","b",10)) must notBeNull //tuple10
-      val data = writeV( (1,"a",false))
+      writeV( (1,"a",false,2)) must notBeNull
+      writeV( (1,"a",false,2  )) must notBeNull
+      writeV( (1,"a",false,2  ,"hoge")) must notBeNull
+      writeV( (1,"a",false,2  ,"fuga","hoge")) must notBeNull
+      writeV( (1,"a",false,2  ,"fuga","hoge",false)) must notBeNull
+      writeV( (1,"a",false,2  ,"fuga","hoge",false,"a")) must notBeNull
+      writeV( (1,"a",false,2  ,"fuga","hoge",false,"a","b")) must notBeNull
+      writeV( (1,"a",false,2  ,"fuga","hoge",false,"a","b",10)) must notBeNull //tuple10
+      writeV( (1,"a",false,2  ,"fuga","hoge",false,"a","b",10,11)) must notBeNull
+      writeV( (1,"a",false,2  ,"fuga","hoge",false,"a","b",10,11,12)) must notBeNull
+      writeV( (1,"a",false,2  ,"fuga","hoge",false,"a","b",10,11,12,13)) must notBeNull
+      writeV( (1,"a",false,2  ,"fuga","hoge",false,"a","b",10,11,12,13,14)) must notBeNull
+      writeV( (1,"a",false,2  ,"fuga","hoge",false,"a","b",10,11,12,13,14,15)) must notBeNull
+      writeV( (1,"a",false,2  ,"fuga","hoge",false,"a","b",10,11,12,13,14,15,16)) must notBeNull
+      writeV( (1,"a",false,2  ,"fuga","hoge",false,"a","b",10,11,12,13,14,15,16,17)) must notBeNull
+      writeV( (1,"a",false,2  ,"fuga","hoge",false,"a","b",10,11,12,13,14,15,16,17,18)) must notBeNull
+      writeV( (1,"a",false,2  ,"fuga","hoge",false,"a","b",10,11,12,13,14,15,16,17,18,19)) must notBeNull
+      writeV( (1,"a",false,2  ,"fuga","hoge",false,"a","b",10,11,12,13,14,15,16,17,18,19,20)) must notBeNull //tuple20
+      writeV( (1,"a",false,2  ,"fuga","hoge",false,"a","b",10,11,12,13,14,15,16,17,18,19,20,21)) must notBeNull
+      writeV( (1,"a",false,2  ,"fuga","hoge",false,"a","b",10,11,12,13,14,15,16,17,18,19,20,21,22)) must notBeNull
+      val data = writeV( (1,"a",false,("nested","tuple")))
       val decoded = readAsValue(data)
       decoded(0).asInt must_== 1
       decoded(1).asString must_== "a"
