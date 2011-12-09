@@ -79,21 +79,22 @@ class Inherit extends RootClass with RootTrait{
 @Message
 class CustomGetterSetter{
 
-  private var _myNumber : Int = 0
+  // private var must set prefix _ph_( place holder)
+  private var _ph_myNumber : Int = 0
 
-  def myNumber : Int = _myNumber
-  def myNumber_=( v:  Int) : Unit = _myNumber = v
+  def myNumber : Int = _ph_myNumber
+  def myNumber_=( v:  Int) : Unit = _ph_myNumber = v
 }
 
 @Message
 class OverloadVars{
 
-  private var _id : Long = 0
+  private var _ph_id : Long = 0
 
-  def id_=( v : String) = _id = v.toLong
-  def id_=( v : Long) = _id = v
-  def id : Long = _id
-  def id_=(obj : Any) = _id = obj.toString.toLong
+  def id_=( v : String) = _ph_id = v.toLong
+  def id_=( v : Long) = _ph_id = v
+  def id : Long = _ph_id
+  def id_=(obj : Any) = _ph_id = obj.toString.toLong
 }
 
 @Message

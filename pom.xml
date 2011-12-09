@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.msgpack</groupId>
     <artifactId>msgpack-scala_${scala.version}</artifactId>
-    <version>0.6.2</version>
+    <version>0.6.3</version>
     <name>${project.artifactId}</name>
     <description>MessagePack for scala</description>
     <inceptionYear>2011</inceptionYear>

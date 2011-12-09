@@ -110,8 +110,8 @@ trait ScalaPropertyFinder{
           case None => {
             // if filed starts with "_" exists, it's also valid field for message pack.
             // This rule is to support custom getter and setter.
-            if(name.startsWith("_")){
-              val sname = name.substring(1)
+            if(name.startsWith("_ph_")){
+              val sname = name.substring(4)
               getterAndSetter(sname + ":" + f.getType().getName()) match{
                 case Some((g,s)) => props +=( sname -> (g,s,f))
                 case None =>
