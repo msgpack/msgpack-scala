@@ -1,11 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>org.msgpack</groupId>
-    <artifactId>msgpack-scala_${scala.version}</artifactId>
-    <version>0.6.4-SNAPSHOT</version>
-    <name>${project.artifactId}</name>
-    <description>MessagePack for scala</description>
-    <inceptionYear>2011</inceptionYear>
+<pomExtra>
 
     <licenses>
         <license>
@@ -19,7 +12,6 @@
         <maven.compiler.source>1.5</maven.compiler.source>
         <maven.compiler.target>1.5</maven.compiler.target>
         <encoding>UTF-8</encoding>
-        <scala.version>2.9.0</scala.version>
     </properties>
 
 
@@ -60,9 +52,6 @@
             </distributionManagement>
         </profile>
     </profiles>
-
-
-
     <developers>
         <developer>
             <id>takeshita</id>
@@ -70,41 +59,6 @@
             <email>takezoux2@gmail.com</email>
         </developer>
     </developers>
-
-    <repositories>
-        <repository>
-            <id>msgpack.org</id>
-            <name>MessagePack Repository for Maven</name>
-            <url>http://msgpack.org/maven2/</url>
-        </repository>
-    </repositories>
-
-    <dependencies>
-        <dependency>
-            <groupId>org.scala-lang</groupId>
-            <artifactId>scala-library</artifactId>
-            <version>${scala.version}</version>
-        </dependency>
-
-        <!-- Test -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.8.1</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.scala-tools.testing</groupId>
-            <artifactId>specs_${scala.version}</artifactId>
-            <version>1.6.8</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.msgpack</groupId>
-            <artifactId>msgpack</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-    </dependencies>
 
 
     <build>
@@ -181,4 +135,5 @@
             </plugin>
         </plugins>
     </build>
-</project>
+
+</pomExtra>

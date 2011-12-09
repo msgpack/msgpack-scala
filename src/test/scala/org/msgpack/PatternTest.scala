@@ -21,6 +21,7 @@ import org.junit.runner.RunWith
 import org.specs.Specification
 import org.specs.runner.{JUnit, JUnitSuiteRunner}
 import org.specs.matcher.Matcher
+import org.junit.Ignore
 
 /**
  * 
@@ -37,7 +38,7 @@ class JavassistPatternTest extends PatternTestBase(ScalaMessagePack)
 @RunWith(classOf[JUnitSuiteRunner])
 class ReflectionPatternTest extends PatternTestBase(ScalaMessagePackForReflection)
 
-class PatternTestBase(messagePack : ScalaMessagePackWrapper) extends Specification with JUnit{
+abstract class PatternTestBase(messagePack : ScalaMessagePackWrapper) extends Specification with JUnit{
 
   import messagePack._
 
