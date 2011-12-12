@@ -17,7 +17,8 @@
 //
 package org.msgpack
 
-import annotation.{Ignore, NotNullable, Index, Message}
+import annotation._
+import java.util.{Calendar, Date}
 
 /**
  * To test primitive types
@@ -34,6 +35,34 @@ class PrimitiveTypes{
   var floatVal : Float = 5.0f
   var doubleVal : Double = 6.0
 }
+
+@Message
+class CommonTypes{
+
+  var string : String = ""
+  var date : Date = new Date()
+  var calendar : Calendar = Calendar.getInstance()
+
+}
+
+/* not support enumeration now
+@Message
+class Enums{
+
+  @ScalaEnum("org.msgpack.Gender")
+  var gender : Gender.Value = Gender.Male
+  @ScalaEnum("org.msgpack.Country")
+  var country : Country.Value = Country.Japan
+
+}
+object Gender extends Enumeration{
+  val Male = Value(1)
+  val Female = Value(2)
+}
+object Country extends Enumeration{
+  val Japan = Value(218,"japan")
+}
+*/
 
 
 

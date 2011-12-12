@@ -22,6 +22,7 @@ import org.specs.Specification
 import org.specs.runner.{JUnit, JUnitSuiteRunner}
 import org.specs.matcher.Matcher
 import org.junit.Ignore
+import java.util.{Date, Calendar}
 
 /**
  * 
@@ -57,7 +58,29 @@ abstract class PatternTestBase(messagePack : ScalaMessagePackWrapper) extends Sp
       checkOn(o,"intVal","byteVal","shortVal","longVal","doubleVal","floatVal")
     }
   }
+  "CommonTypes" should{
+    "encode / decode" in{
+      val o = new CommonTypes
+      o.string = "93mkodw978932jkj";
+      o.date = new Date(12898472378L)
+      o.calendar = Calendar.getInstance()
+      checkOn(o,"string","date","calendar")
 
+    }
+
+  }
+
+  /* don't support enumeration now
+  "Enums" should{
+    "encode / decode in unsafe template" in{
+      val e = new Enums
+      e.gender = Gender.Male
+      e.country = null
+      checkOn(e,"gender","country")
+    }
+
+  }
+  */
   "Indexing" should{
     "index correctly" in{
       val o = new Indexing()

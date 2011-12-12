@@ -54,6 +54,7 @@ class ScalaTemplateRegistry extends TemplateRegistry(null){
       new LinkedListTemplate(anyTemplate))
     register(classOf[Seq[_]],new ImmutableListTemplate(anyTemplate))
     register(classOf[scala.collection.immutable.List[_]],new ImmutableListTemplate[Any](anyTemplate))
+    register(classOf[java.util.Calendar],new CalendarTemplate)
     //tuples
     register(classOf[Tuple1[_]], new Tuple1Template[Any](anyTemplate))
     register(classOf[Tuple2[_,_]], new Tuple2Template[Any,Any](anyTemplate,anyTemplate))
