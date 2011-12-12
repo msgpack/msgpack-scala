@@ -40,6 +40,12 @@ import java.io.InputStream
  * Time: 1:34
  */
 object ScalaMessagePack extends ScalaMessagePackWrapper with ValueConversions{
+
+  /**
+   * dummy init method
+   */
+  def init() = {}
+
   val messagePack = new ScalaMessagePack()
 }
 
