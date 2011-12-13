@@ -127,6 +127,7 @@ class ScalaTemplateRegistry extends TemplateRegistry(null){
     registerGeneric(classOf[Tuple21[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_]], new GenericTuple21Template())
     registerGeneric(classOf[Tuple22[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_]], new GenericTuple22Template())
 
+    //register(classOf[AnyRef],new DynamicTemplate(this))
   }
 
   def register[T]( template : Template[T])(implicit manifest : Manifest[T]) : Unit = {
@@ -162,6 +163,7 @@ class ScalaTemplateBuilderChain(registry : TemplateRegistry,forceReflectionMode 
 
     templateBuilders.add(new ArrayTemplateBuilder(registry))
     templateBuilders.add(new OrdinalEnumTemplateBuilder(registry))
+    templateBuilders.add(new DynamicTemplateBuilder(registry))
     if (enableDynamicCodeGeneration) {
       forceBuilder = new JavassistScalaTemplateBuilder(registry)
       if (cl != null) {

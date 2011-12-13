@@ -36,7 +36,26 @@ class ClassWithList {
 
   var mutable3 : ListBuffer[String] = ListBuffer.empty
 
+  var array : Array[Int] = Array()
+
+  var immutableObj : List[SimpleClass] = Nil
+
   //var tuple2 : (String,String) = (null,null)
+}
+
+@Message
+case class SimpleClass(var i : Int){
+  def this() = this(200)
+}
+
+@MessagePackMessage
+class ClassWithPrimitiveTypeList{
+
+  var intList : List[Int] = Nil
+  var longList : List[Long] = Nil
+  var boolList : List[Boolean] = Nil
+  var doubleList : List[Double] = Nil
+  var floatList : List[Float] = Nil
 }
 
 /**

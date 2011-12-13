@@ -33,4 +33,6 @@ class ClassWithMap {
 
   var mutable : MMap[String,String] = MMap.empty
 
+  var immutablePrimitive : Map[String, Long] = Map.empty
+
 }
