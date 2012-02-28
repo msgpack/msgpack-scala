@@ -19,12 +19,12 @@
         <maven.compiler.source>1.5</maven.compiler.source>
         <maven.compiler.target>1.5</maven.compiler.target>
         <encoding>UTF-8</encoding>
+<!-- default build is for scala 2.9.0 -->
         <scala.version>2.9.0</scala.version>
+        <specs.version>1.6.8</specs.version>
     </properties>
 
-
     <profiles>
-
         <!-- deploy setting -->
         <profile>
             <id>default_deploy</id>
@@ -59,9 +59,31 @@
                 </snapshotRepository>
             </distributionManagement>
         </profile>
+        <profile>
+            <id>scala2.9.0</id>
+            <activation>
+                <property>
+                    <name>scala.version</name>
+                    <value>2.9.0</value>
+                </property>
+            </activation>
+            <properties>
+                <specs.version>1.6.8</specs.version>
+            </properties>
+        </profile>
+        <profile>
+            <id>scala2.9.1</id>
+            <activation>
+                <property>
+                    <name>scala.version</name>
+                    <value>2.9.1</value>
+                </property>
+            </activation>
+            <properties>
+                <specs.version>1.6.9</specs.version>
+            </properties>
+        </profile>
     </profiles>
-
-
 
     <developers>
         <developer>
@@ -85,6 +107,11 @@
             <artifactId>scala-library</artifactId>
             <version>${scala.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.msgpack</groupId>
+            <artifactId>msgpack</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
         <!-- Test -->
         <dependency>
@@ -96,16 +123,10 @@
         <dependency>
             <groupId>org.scala-tools.testing</groupId>
             <artifactId>specs_${scala.version}</artifactId>
-            <version>1.6.8</version>
+            <version>${specs.version}</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.msgpack</groupId>
-            <artifactId>msgpack</artifactId>
-            <version>${project.version}</version>
-        </dependency>
     </dependencies>
-
 
     <build>
         <sourceDirectory>src/main/scala</sourceDirectory>
@@ -154,7 +175,6 @@
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
-
                 </configuration>
                 <executions>
                     <execution>
@@ -165,7 +185,6 @@
                         </goals>
                     </execution>
                 </executions>
-
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
