@@ -19,9 +19,9 @@
         <maven.compiler.source>1.5</maven.compiler.source>
         <maven.compiler.target>1.5</maven.compiler.target>
         <encoding>UTF-8</encoding>
-<!-- default build is for scala 2.9.0 -->
-        <scala.version>2.9.0</scala.version>
-        <specs.version>1.6.8</specs.version>
+<!-- default build is for scala 2.9.1 -->
+        <scala.version>2.9.1</scala.version>
+        <specs.version>1.6.9</specs.version>
     </properties>
 
     <profiles>
