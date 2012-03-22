@@ -1,5 +1,8 @@
 <pomExtra>
-
+    <name>${project.artifactId}</name>
+    <description>MessagePack for Scala ${scala.version}</description>
+    <url>https://github.com/msgpack/msgpack-scala</url>
+    <inceptionYear>2011</inceptionYear>
     <licenses>
         <license>
             <name>The Apache Software License, Version 2.0</name>
@@ -7,39 +10,30 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
-
+    <scm>
+        <connection>scm:git:git://github.com/msgpack/msgpack-scala.git</connection>
+        <developerConnection>scm:git:git@github.com/msgpack/msgpack-scala.git</developerConnection>
+        <url>scm:git:git://github.com/msgpack/msgpack-scala.git</url>
+    </scm>
+    <issueManagement>
+        <system>github</system>
+        <url>https://github.com/msgpack/msgpack-scala/pulls</url>
+    </issueManagement>
+    <developers>
+        <developer>
+            <id>takeshita</id>
+            <name>Yositeru Takeshita</name>
+            <email>takezoux2@gmail.com</email>
+        </developer>
+    </developers>
     <properties>
         <maven.compiler.source>1.5</maven.compiler.source>
         <maven.compiler.target>1.5</maven.compiler.target>
         <encoding>UTF-8</encoding>
     </properties>
-
-
     <profiles>
-
-        <!-- deploy setting -->
         <profile>
-            <id>default_deploy</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <distributionManagement>
-                <repository>
-                    <uniqueVersion>false</uniqueVersion>
-                    <id>msgpack.org</id>
-                    <name>Repository at msgpack.org</name>
-                    <url>file://${project.build.directory}/website/maven2/</url>
-                </repository>
-                <snapshotRepository>
-                    <uniqueVersion>true</uniqueVersion>
-                    <id>msgpack.org</id>
-                    <name>Repository at msgpack.org</name>
-                    <url>file://${project.build.directory}/website/maven2/</url>
-                </snapshotRepository>
-            </distributionManagement>
-        </profile>
-        <profile>
-            <id>to_my_repo</id>
+            <id>geishatokyo</id>
             <distributionManagement>
                 <repository>
                     <id>geishatokyo-releases</id>
@@ -52,15 +46,13 @@
             </distributionManagement>
         </profile>
     </profiles>
-    <developers>
-        <developer>
-            <id>takeshita</id>
-            <name>Yositeru Takeshita</name>
-            <email>takezoux2@gmail.com</email>
-        </developer>
-    </developers>
-
-
+    <repositories>
+        <repository>
+            <id>msgpack.org</id>
+            <name>MessagePack Repository for Maven</name>
+            <url>http://msgpack.org/maven2/</url>
+        </repository>
+    </repositories>
     <build>
         <sourceDirectory>src/main/scala</sourceDirectory>
         <testSourceDirectory>src/test/scala</testSourceDirectory>
@@ -108,7 +100,6 @@
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
-
                 </configuration>
                 <executions>
                     <execution>
@@ -119,7 +110,6 @@
                         </goals>
                     </execution>
                 </executions>
-
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -135,5 +125,18 @@
             </plugin>
         </plugins>
     </build>
-
+    <distributionManagement>
+        <repository>
+            <uniqueVersion>false</uniqueVersion>
+            <id>msgpack.org</id>
+            <name>Repository at msgpack.org</name>
+            <url>file://${project.build.directory}/website/maven2/</url>
+        </repository>
+        <snapshotRepository>
+            <uniqueVersion>true</uniqueVersion>
+            <id>msgpack.org</id>
+            <name>Repository at msgpack.org</name>
+            <url>file://${project.build.directory}/website/maven2/</url>
+        </snapshotRepository>
+    </distributionManagement>
 </pomExtra>
