@@ -63,6 +63,19 @@
             </properties>
         </profile>
         <profile>
+            <id>scala2.9.0-1</id>
+            <activation>
+                <property>
+                    <name>scala.version</name>
+                    <value>2.9.0-1</value>
+                </property>
+            </activation>
+            <properties>
+                <scala.version>2.9.0-1</scala.version>
+                <specs.version>1.6.8</specs.version>
+            </properties>
+        </profile>
+        <profile>
             <id>scala2.9.1</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
