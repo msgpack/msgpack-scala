@@ -75,10 +75,8 @@ object ScalaSigUtil {
           case _ => throw new Exception("Never match here")
         }
       }else if(clazz.path == "scala.Enumeration.Value"){
-        println("####" + clazz.path) //TODO delete
         prefix match{
           case SingleType(_,name) => {
-            println("####-" + name.path) //TODO delete
             Some(nameMapper(name.path))
           }
         }
