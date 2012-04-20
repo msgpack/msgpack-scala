@@ -166,7 +166,21 @@ abstract class PatternTestBase(messagePack : ScalaMessagePackWrapper) extends Sp
 
   "Enumeration" should{
     "encode / decode" in{
-      checkOn(new EnumFields,"enum1","enum2")
+      val e = new EnumFields
+      e.enum1 = MyEnum.V2
+      e.enum2 = MyEnum2.V2
+      checkOn(e,"enum1","enum2")
+    }
+  }
+
+  "Option" should{
+    "encode / decode" in{
+      val o = new OptionFileds
+      o.o1 = Some(28932)
+      o.o2 = None
+      o.l = Left("Hello")
+      o.r = Right(23093)
+      checkOn(o,"o1","o2","l","r")
     }
   }
 

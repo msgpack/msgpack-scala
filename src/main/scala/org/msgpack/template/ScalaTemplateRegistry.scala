@@ -107,6 +107,9 @@ class ScalaTemplateRegistry extends TemplateRegistry(null){
       new GenericMutableMapTemplate[MutableListMapTemplate[_,_]])
     registerGeneric(classOf[scala.collection.mutable.Map[_,_]],
       new GenericMutableMapTemplate[MutableHashMapTemplate[_,_]])
+    registerGeneric(classOf[Option[_]],new GenericOptionTemplate)
+    registerGeneric(classOf[Either[_,_]],new GenericEitherTemplate)
+
 
     //tuples
     registerGeneric(classOf[Tuple1[_]], new GenericTuple1Template())

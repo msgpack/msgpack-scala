@@ -184,13 +184,14 @@ class CycleC{
 @Message
 class EnumFields{
 
-  var enum1 : MyEnum.Value  = MyEnum.MyEnum
-  var enum2 : MyEnum2.Value = MyEnum2.MyEnum2
+  var enum1 : MyEnum.Value  = MyEnum.V1
+  var enum2 : MyEnum2.Value = MyEnum2.V1
 }
 
 
 object MyEnum extends Enumeration{
-  val MyEnum = Value
+  val V1 = Value
+  val V2 = Value
 }
 
 class EnumExt extends Enumeration{
@@ -198,5 +199,16 @@ class EnumExt extends Enumeration{
 }
 
 object MyEnum2 extends EnumExt{
-  val MyEnum2 = Value(2)
+  val V1 = Value(29)
+  val V2 = Value(234)
+}
+
+@Message
+class OptionFileds{
+  var o1 : Option[Int] = Some(23229)
+  var o2 : Option[String] = Some("hoge")
+  var l : Either[String,Long] = null
+  var r : Either[Boolean,Double] = null
+
+  var aa : String = "000"
 }
