@@ -42,6 +42,7 @@ class CollectionPackTest extends Specification with JUnit  {
       val c = new ClassWithList
 
       c.immutable = "z" :: List("a","b","c")
+      c.immutableSeq = Seq("a","b","c")
       c.mutable = LinkedList("a","b","d")
       c.mutable2 ++= List("gh","fjei")
       c.mutable3 = ListBuffer("fdk","fei")
@@ -82,13 +83,18 @@ class CollectionPackTest extends Specification with JUnit  {
       c.immutable = Map("a" -> "hoge","b" -> "fuga","c" -> "hehe")
       c.mutable = scala.collection.mutable.Map("d" -> "oo" , "e" -> "aa")
       c.immutablePrimitive = Map("c" -> 2)
+      c.immutablePrimitive2 = Map(5L -> 3934,34L -> 23222)
 
       val b = ScalaMessagePack.write(c)
       val des = ScalaMessagePack.read[ClassWithMap](b)
 
+      val i = des.immutablePrimitive2(5L)
+      i must_== c.immutablePrimitive2(5L)
+
       des.immutable must be_==(c.immutable)
       des.mutable must be_==(c.mutable)
       des.immutablePrimitive must be_==(c.immutablePrimitive)
+      des.immutablePrimitive2 must be_==(c.immutablePrimitive2)
 
     }
 

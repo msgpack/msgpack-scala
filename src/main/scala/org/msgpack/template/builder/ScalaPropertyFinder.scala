@@ -18,13 +18,15 @@
 package org.msgpack.template.builder
 
 import org.msgpack.template.FieldOption
-import java.lang.reflect.{Modifier, Field, Method}
 import collection.immutable.ListMap
 import org.msgpack.annotation.{NotNullable, Optional, Index, Ignore}
 import java.lang.annotation.{ Annotation => JAnnotation}
+import tools.scalap.scalax.rules.scalasig._
+import java.lang.reflect.{Modifier, Field, Method, Type => JType, ParameterizedType}
+import org.msgpack.scalautil.ScalaSigUtil
 
 /**
- * 
+ * Combination with java reflection and scalap.ScalaSigParser
  * User: takeshita
  * Create: 11/10/13 11:53
  */
@@ -33,125 +35,115 @@ trait ScalaPropertyFinder{
 
   self : AbstractTemplateBuilder =>
 
-  type Property = (Method,Method,Field)
+  type Property = (Method,Method,Field,MethodSymbol)
   type PropertySet = (String,Property)
+  val SetterSuffix = "_$eq"
 
   override def toFieldEntries(targetClass: Class[_], from: FieldOption) : Array[FieldEntry] = {
-    val props = findPropertyMethods(targetClass) filter( !hasAnnotation(_,classOf[Ignore]))
-    val indexed = indexing(props)
+
+
+    /*val sig = ScalaSigParser.parse(targetClass)
+    
+    val (setters,getters) = sig.get.symbols.collect({
+      case m : MethodSymbol => {
+        m.name -> m
+      }
+    }).partition(v => v._1.endsWith(SetterSuffix))
+
+    val getterMap = getters.toMap
+
+    val props = setters.map(s => s._1.substring(0,s._1.length - 4)).
+      filter(fieldName => getterMap.contains(fieldName)).map(fieldName => {
+      fieldName -> getterMap(fieldName)
+    })*/
+
+    val props = ScalaSigUtil.getAllPropGetters(targetClass)
+
+    println("###" + props.map(_._1).mkString(" , ")) //TODO delete
+    val propertySetSeq = toPropertySetSeq(targetClass,props)
+    val indexed = indexing(propertySetSeq)
+
     indexed.map(convertToScalaFieldEntry(_))
   }
 
-  def setter_?(method : Method) : Boolean = {
-    val name = method.getName
-    Modifier.isPublic(method.getModifiers) &&
-    method.getReturnType.getName == "void" &&
-    !name.startsWith("_") &&
-    name.endsWith("_$eq") &&
-    method.getParameterTypes.length == 1
-  }
 
-  def getter_?(method : Method) : Boolean = {
-    !method.getName.startsWith("_") &&
-    Modifier.isPublic(method.getModifiers) &&
-    method.getReturnType.getName != "void" &&
-    method.getParameterTypes.length == 0
-
-  }
+  def toPropertySetSeq(targetClass: Class[_],props : Seq[(String,MethodSymbol)]) : Seq[PropertySet] = {
+    val methodMap = targetClass.getMethods().filter(isGetterOrSetter _).groupBy(_.getName)
+    val fieldMap = targetClass.getDeclaredFields.map(f => f.getName -> f).toMap
 
 
-
-
-  def findPropertyMethods(targetClass: Class[_]) : Map[String,Property] = {
-    var getters : Map[String,Method] = ListMap.empty
-    var setters : Map[String,Method] = ListMap.empty
-
-    def extractName( n : String) = {
-      n.substring(0,n.length - 4)
-    }
-
-    //Find getters and setters
-    for( m <- targetClass.getMethods){
-      if(setter_?(m)){
-        val valType = m.getParameterTypes()(0).getName
-        setters +=( (extractName(m.getName) + ":" + valType) -> m)
-      }else if(getter_?(m)){
-        val valType = m.getReturnType.getName
-        getters +=( (m.getName + ":" + valType) -> m)
-      }
-    }
-
-    var props : Map[String,Property] = ListMap.empty
-
-    def sameType_?( getter : Method,setter : Method) = {
-      getter.getReturnType == setter.getParameterTypes()(0)
-    }
-    // order of methods changes depends on call order, NOT declaration.
-
-    def getterAndSetter(name : String) : Option[(Method,Method)] = {
-      if(getters.contains(name) && setters.contains(name)){
-        val getter = getters(name)
-        val setter = setters(name)
-        if(getter.getReturnType == setter.getParameterTypes()(0)){
-          Some(getter -> setter)
+    val propSets = props.map( p => {
+      val getters = methodMap.get(p._1).map(_.toList).getOrElse(Nil)
+      val setters = methodMap.get(p._1 + SetterSuffix).map(_.toList).getOrElse(Nil)
+      if(getters.size < 1 || setters.size < 1){
+        None
+      }else if(getters.size == 1 && setters.size == 1){
+        val getter = getters(0)
+        val setter = setters(0)
+        if(sameType_?(getter ,setter)){
+          Some( p._1 -> (getter,setter,fieldMap.getOrElse(p._1,null),p._2))
         }else{
           None
         }
-      }else None
-    }
-    def recursiveFind( clazz : Class[_]) : Unit = {
-      if(clazz.getSuperclass != classOf[Object]){
-        recursiveFind(clazz.getSuperclass)
+      }else {
+        val validPairs = for(getter <- getters;
+             setter <- setters if sameType_?(getter ,setter))
+          yield p._1 -> (getter,setter,fieldMap.getOrElse(p._1,null),p._2)
+        validPairs.headOption
       }
-      for(f <- clazz.getDeclaredFields){
-        val name =f.getName
-        getterAndSetter(name + ":" + f.getType().getName()) match{
-          case Some((g,s)) => props +=( name -> (g,s,f))
-          case None => {
-            // if filed starts with "_" exists, it's also valid field for message pack.
-            // This rule is to support custom getter and setter.
-            if(name.startsWith("_ph_")){
-              val sname = name.substring(4)
-              getterAndSetter(sname + ":" + f.getType().getName()) match{
-                case Some((g,s)) => props +=( sname -> (g,s,f))
-                case None =>
-              }
-            }
-          }
-        }
-      }
-    }
-    recursiveFind(targetClass)
+    }).collect({
+      case Some(p) => p
+    })
 
-    props
+    propSets.filter( ps => {
+      !hasAnnotation(ps,classOf[Ignore])
+    })
+
   }
 
-  def indexing( props : Map[String , Property]) : Array[PropertySet] = {
+  def sameType_?(getter: Method, setter: Method) = {
+    getter.getReturnType == setter.getParameterTypes()(0)
+  }
+
+  def isGetterOrSetter( method : Method) = {
+    Modifier.isPublic(method.getModifiers) && !method.getName.startsWith("_") &&
+    ( (
+        method.getReturnType.getName == "void" &&
+        method.getName.endsWith(SetterSuffix) &&
+        method.getParameterTypes.length == 1
+      ) || (
+        method.getReturnType.getName != "void" &&
+        method.getParameterTypes.length == 0
+      ) )
+  }
+
+
+  def indexing(props: Seq[PropertySet]): Array[PropertySet] = {
     val indexed = new Array[PropertySet](props.size)
 
-    var notIndexed : List[PropertySet]  = Nil
+    var notIndexed: List[PropertySet] = Nil
 
-    for(s <- props){
-      val i = getAnnotation(s,classOf[Index])
-      if(i == null){
+    for (s <- props) {
+      val i = getAnnotation(s, classOf[Index])
+      if (i == null) {
         notIndexed = notIndexed :+ s
-      }else{
+      } else {
         val index = i.value
-        if(indexed(index) != null){
-          throw new TemplateBuildException("duplicated index: "+index);
-        }else{
-          try{
+        if (indexed(index) != null) {
+          throw new TemplateBuildException("duplicated index: " + index);
+        } else {
+          try {
             indexed(index) = s
-          }catch{
-            case e : Exception => {
-              throw new TemplateBuildException("invalid index: %s index must be 0 <= x < %s".format(index,indexed.length));
+          } catch {
+            case e: Exception => {
+              throw new TemplateBuildException("invalid index: %s index must be 0 <= x < %s".format(index, indexed.length));
             }
           }
         }
       }
     }
-    for( i <- 0 until indexed.length ){
-      if(indexed(i) == null){
+    for (i <- 0 until indexed.length) {
+      if (indexed(i) == null) {
         indexed(i) = notIndexed.head
         notIndexed = notIndexed.drop(1)
       }
@@ -161,51 +153,18 @@ trait ScalaPropertyFinder{
     indexed
   }
 
-  def convertToScalaFieldEntry( propInfo : PropertySet) = {
-    val entry = new ScalaFieldEntry(propInfo._1,
-      readFieldOption(propInfo,FieldOption.OPTIONAL),
-      readValueType(propInfo),
-      readGenericType(propInfo),
-      propInfo._2._1,
-      propInfo._2._2
-    )
-
-    entry
-  }
-  def readFieldOption(prop : PropertySet , implicitOption : FieldOption) = {
-    if(hasAnnotation(prop,classOf[Optional])){
-      FieldOption.OPTIONAL
-    } else if(hasAnnotation(prop,classOf[NotNullable])){
-      FieldOption.NOTNULLABLE
-    }else if(hasAnnotation(prop,classOf[Ignore])){
-      FieldOption.IGNORE
-    }else{
-      if(readValueType(prop).isPrimitive){
-        FieldOption.NOTNULLABLE
-      }else{
-        FieldOption.OPTIONAL
-      }
-    }
-
-  }
-  def readValueType(prop : PropertySet) = {
-    prop._2._1.getReturnType
-  }
-  def readGenericType(prop : PropertySet) = {
-    prop._2._1.getGenericReturnType
-  }
-
-
-  def hasAnnotation[T <: JAnnotation](prop : PropertySet , classOfAnno : Class[T]) : Boolean = {
+  def hasAnnotation[T <: JAnnotation](prop: PropertySet, classOfAnno: Class[T]): Boolean = {
     val getter = prop._2._1
     val setter = prop._2._2
     val field = prop._2._3
     getter.getAnnotation(classOfAnno) != null ||
-    setter.getAnnotation(classOfAnno) != null ||
-      {if(field != null) field.getAnnotation(classOfAnno) != null
-    else false}
+      setter.getAnnotation(classOfAnno) != null || {
+      if (field != null) field.getAnnotation(classOfAnno) != null
+      else false
+    }
   }
-  def getAnnotation[T <: JAnnotation](prop : PropertySet , classOfAnno : Class[T]) : T = {
+
+  def getAnnotation[T <: JAnnotation](prop: PropertySet, classOfAnno: Class[T]): T = {
     val getter = prop._2._1
     val setter = prop._2._2
     val field = prop._2._3
@@ -213,17 +172,62 @@ trait ScalaPropertyFinder{
 
 
     val a = getter.getAnnotation(classOfAnno)
-    if(a != null){
+    if (a != null) {
       a
-    }else{
+    } else {
       val b = setter.getAnnotation(classOfAnno)
-      if(b != null){
+      if (b != null) {
         b
-      }else if(field != null){
+      } else if (field != null) {
         field.getAnnotation(classOfAnno)
-      }else{
+      } else {
         null.asInstanceOf[T]
       }
     }
+  }
+
+  def convertToScalaFieldEntry(propInfo: PropertySet) = {
+    val getter = propInfo._2._1
+    getter.getGenericReturnType match{
+      case pt : ParameterizedType => {
+        new ScalaFieldEntry(propInfo._1,
+          readFieldOption(propInfo, FieldOption.OPTIONAL),
+          getter.getReturnType,
+          ScalaSigUtil.getReturnType(propInfo._2._4).get,
+          propInfo._2._1,
+          propInfo._2._2
+        )
+      }
+      case t => {
+        new ScalaFieldEntry(propInfo._1,
+          readFieldOption(propInfo, FieldOption.OPTIONAL),
+          getter.getReturnType,
+          t,
+          propInfo._2._1,
+          propInfo._2._2
+        )
+      }
+    }
+  }
+
+  def readValueType(prop: PropertySet) = {
+    prop._2._1.getReturnType
+  }
+
+  def readFieldOption(prop: PropertySet, implicitOption: FieldOption) = {
+    if (hasAnnotation(prop, classOf[Optional])) {
+      FieldOption.OPTIONAL
+    } else if (hasAnnotation(prop, classOf[NotNullable])) {
+      FieldOption.NOTNULLABLE
+    } else if (hasAnnotation(prop, classOf[Ignore])) {
+      FieldOption.IGNORE
+    } else {
+      if (readValueType(prop).isPrimitive) {
+        FieldOption.NOTNULLABLE
+      } else {
+        FieldOption.OPTIONAL
+      }
+    }
+
   }
 }

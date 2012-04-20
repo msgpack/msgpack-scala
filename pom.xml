@@ -19,7 +19,7 @@
         <maven.compiler.source>1.5</maven.compiler.source>
         <maven.compiler.target>1.5</maven.compiler.target>
         <encoding>UTF-8</encoding>
-        <scala.version>2.9.0</scala.version>
+        <scala.version>2.9.1</scala.version>
     </properties>
 
 
@@ -85,6 +85,11 @@
             <artifactId>scala-library</artifactId>
             <version>${scala.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.scala-lang</groupId>
+            <artifactId>scalap</artifactId>
+            <version>${scala.version}</version>
+        </dependency>
 
         <!-- Test -->
         <dependency>
@@ -96,7 +101,7 @@
         <dependency>
             <groupId>org.scala-tools.testing</groupId>
             <artifactId>specs_${scala.version}</artifactId>
-            <version>1.6.8</version>
+            <version>1.6.9</version>
             <scope>test</scope>
         </dependency>
         <dependency>

@@ -82,6 +82,8 @@ class ScalaTemplateRegistry extends TemplateRegistry(null){
     registerGeneric(classOf[scala.collection.immutable.List[_]],new GenericImmutableListTemplate())
     registerGeneric(classOf[scala.collection.immutable.Map[_,_]],new GenericImmutableMapTemplate())
     registerGeneric(classOf[scala.collection.immutable.Seq[_]],new GenericImmutableListTemplate())
+    registerGeneric(classOf[scala.collection.Seq[_]],new GenericImmutableListTemplate())
+    registerGeneric(classOf[Seq[_]],new GenericImmutableListTemplate())
 
     registerGeneric(classOf[DoubleLinkedList[_]],
       new GenericMutableListTemplate[DoubleLinkedListTemplate[_]]())

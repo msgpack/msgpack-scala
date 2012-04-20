@@ -30,6 +30,8 @@ import collection.mutable.{ListBuffer, MutableList, LinkedList}
 class ClassWithList {
   var immutable : List[String] = Nil
 
+  var immutableSeq : Seq[String] = Nil
+
   var mutable : LinkedList[String] = LinkedList.empty
 
   var mutable2 : MutableList[String] = new MutableList

@@ -13,7 +13,7 @@ object MessagePackScalaBuild extends Build {
         organization := "org.msgpack",
         name := "msgpack-scala",
         version := messagePackVersion,
-        scalaVersion := "2.9.0",
+        scalaVersion := "2.9.1",
         crossScalaVersions := Seq("2.9.0","2.9.0-1","2.9.1"),
         resolvers ++= Seq(Resolver.mavenLocal),
         parallelExecution in Test := false
@@ -28,10 +28,17 @@ object MessagePackScalaBuild extends Build {
     "log4j" % "log4j" % "1.2.16" % "test"
   )
 
-  lazy val scalaSpecs = (scalaVersion) { v => { v match{
-      case "2.9.1" => "org.scala-tools.testing" %% "specs" % "1.6.9" % "test"
+  lazy val dependsOnScalaVersion = (scalaVersion) { v => {
+    val specs = v match{
+      case "2.9.1" => Seq("org.scala-tools.testing" %% "specs" % "1.6.9" % "test"
       case _ => "org.scala-tools.testing" %% "specs" % "1.6.8" % "test"
-    }}}
+    }
+    Seq(
+      "org.scala-lang" % "scalap" % scalaVersion,
+      specs
+    )
+  }}
+  
   
 
   lazy val root = Project(id = "msgpack-scala",
@@ -39,7 +46,7 @@ object MessagePackScalaBuild extends Build {
                           settings = Project.defaultSettings ++ Seq(
                             libraryDependencies ++= dependencies,
                             libraryDependencies ++= dependenciesForTest,
-                            libraryDependencies <+= scalaSpecs,
+                            libraryDependencies <++= dependsOnScalaVersion,
                             pomExtra := loadPomExtra()
                             )
   )
