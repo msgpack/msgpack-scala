@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.msgpack</groupId>
     <artifactId>msgpack-scala_${scala.version}</artifactId>
-    <version>0.6.4-SNAPSHOT</version>
+    <version>0.6.6-SNAPSHOT</version>
     <name>${project.artifactId}</name>
     <description>MessagePack for scala</description>
     <inceptionYear>2011</inceptionYear>
@@ -89,6 +89,12 @@
             <groupId>org.scala-lang</groupId>
             <artifactId>scalap</artifactId>
             <version>${scala.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.6.4</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- Test -->
