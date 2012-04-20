@@ -164,6 +164,12 @@ abstract class PatternTestBase(messagePack : ScalaMessagePackWrapper) extends Sp
     }
   }
 
+  "Enumeration" should{
+    "encode / decode" in{
+      checkOn(new EnumFields,"enum1","enum2")
+    }
+  }
+
 
 
   def checkOn[T <: AnyRef](obj : T , propNames : String*)(implicit manifest : Manifest[T]) : T = {

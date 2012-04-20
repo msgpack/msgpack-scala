@@ -180,3 +180,23 @@ class CycleB{
 class CycleC{
   var cycleA : CycleA = null
 }
+
+@Message
+class EnumFields{
+
+  var enum1 : MyEnum.Value  = MyEnum.MyEnum
+  var enum2 : MyEnum2.Value = MyEnum2.MyEnum2
+}
+
+
+object MyEnum extends Enumeration{
+  val MyEnum = Value
+}
+
+class EnumExt extends Enumeration{
+
+}
+
+object MyEnum2 extends EnumExt{
+  val MyEnum2 = Value(2)
+}

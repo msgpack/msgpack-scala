@@ -23,6 +23,9 @@ import java.math.BigInteger
 import java.nio.ByteBuffer
 import org.msgpack.`type`.Value
 import org.msgpack.template.TemplateRegistry._
+import java.lang.reflect.Type
+import org.msgpack.scalautil.ScalaSigUtil
+import org.msgpack.MessageTypeException
 
 /**
  * 
@@ -139,6 +142,43 @@ class ScalaTemplateRegistry extends TemplateRegistry(null){
 
   override def createTemplateBuilderChain() = {
     new ScalaTemplateBuilderChain(this)
+  }
+
+  override def lookup(targetType: Type): Template[_] = {
+
+    try{
+      super.lookup(targetType)
+    }catch{
+      case e : MessageTypeException => {
+        targetType match{
+          case c : Class[_] => {
+            ScalaSigUtil.getCompanionObject(c) match{
+              case Some(com) if classOf[Enumeration].isAssignableFrom(com) => {
+                new EnumerationTemplate(c.asInstanceOf[Class[Enumeration]])
+              }
+              case _ => throw e
+            }
+          }
+          case _ => throw e
+        }
+      }
+    }
+
+    /* TODO which is better ?
+    targetType match{
+      case c : Class[_] => {
+        ScalaSigUtil.getCompanionObject(c) match{
+          case Some(com) if classOf[Enumeration].isAssignableFrom(com) => {
+            new EnumerationTemplate(c.asInstanceOf[Class[Enumeration]])
+          }
+          case _ => {
+            super.lookup(targetType)
+          }
+        }
+      }
+      case _ => super.lookup(targetType)
+    }
+    */
   }
 }
 

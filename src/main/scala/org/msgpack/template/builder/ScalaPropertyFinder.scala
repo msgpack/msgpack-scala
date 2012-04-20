@@ -188,8 +188,22 @@ trait ScalaPropertyFinder{
 
   def convertToScalaFieldEntry(propInfo: PropertySet) = {
     val getter = propInfo._2._1
+    if(getter.getGenericReturnType.isInstanceOf[Class[_]]){
+      println("&&&''" + getter.getGenericReturnType + " " +
+        classOf[Enumeration].isAssignableFrom(getter.getGenericReturnType.asInstanceOf[Class[_]]))  // TODO delete
+    }
     getter.getGenericReturnType match{
       case pt : ParameterizedType => {
+        new ScalaFieldEntry(propInfo._1,
+          readFieldOption(propInfo, FieldOption.OPTIONAL),
+          getter.getReturnType,
+          ScalaSigUtil.getReturnType(propInfo._2._4).get,
+          propInfo._2._1,
+          propInfo._2._2
+        )
+      }
+      case t if t.asInstanceOf[Class[_]].getName == "scala.Enumeration$Value" => {
+        println("&&'&&&" + t) // TODO delete
         new ScalaFieldEntry(propInfo._1,
           readFieldOption(propInfo, FieldOption.OPTIONAL),
           getter.getReturnType,

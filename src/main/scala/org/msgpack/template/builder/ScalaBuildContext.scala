@@ -127,6 +127,8 @@ class ScalaBuildContext(builder : JavassistScalaTemplateBuilder) extends BuildCo
         writePrimitiveValue(builder,index,e)
       }else if(e.nullable_?){
         writeNullableMethod(builder,index,e)
+      }else if(classOf[Enumeration].isAssignableFrom(e.getType)){
+        writeEnumValueMethod(builder,index,e)
       }else{
         writeNotNullableMethod(builder,index,e)
       }
@@ -162,6 +164,16 @@ class ScalaBuildContext(builder : JavassistScalaTemplateBuilder) extends BuildCo
 """.format(entry.getName,classOf[MessageTypeException].getName(),index,entry.getName))
   }
 
+  protected def writeEnumValueMethod(builder : StringBuilder,index : Int, entry : ScalaFieldEntry) = {
+    builder.append("""  if(_$$_t.%s() == null){
+    throw new %s();
+  }else{
+    $1.int(_$$_t.%s().id());
+  }
+""".format(entry.getName,classOf[MessageTypeException].getName(),index,entry.getName))
+  }
+
+
   // for read
 
   def buildReadMethodBody() = {
@@ -190,6 +202,8 @@ class ScalaBuildContext(builder : JavassistScalaTemplateBuilder) extends BuildCo
         readOptionalMethod(builder,index,e)
       }else if(e.primitive_?){
         readPrimitive(builder,index,e)
+      }else if(classOf[Enumeration].isAssignableFrom(e.getType)){
+        readEnumValue(builder,index,e)
       }else{
         readAnyRef(builder,index,e)
       }
@@ -260,6 +274,10 @@ class ScalaBuildContext(builder : JavassistScalaTemplateBuilder) extends BuildCo
       entry.getName,entry.getJavaTypeName,index,entry.getName()))
   }
 
+  def readEnumValue(builder : StringBuilder , index : Int , entry : ScalaFieldEntry) = {
+    builder.append("""
+  _$$_t.%s_$eq( %s.apply($1.int()));""".format(entry.getName,entry.getType.getName))
+  }
 
 
 

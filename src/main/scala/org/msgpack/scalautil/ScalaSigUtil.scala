@@ -66,12 +66,21 @@ object ScalaSigUtil {
 
   def toJavaClass( t : Type , primitive_? : Boolean = true) : Option[JType] = t match{
     case TypeRefType(prefix,clazz , genericParams) => {
+      println("%%%" + clazz.path)
       val nameMapper = if(primitive_?) mapToPrimitiveJavaName else mapToRefJavaName
       if(clazz.path == "scala.Array"){
         toJavaClass(genericParams(0),true) match{
           case Some(c : Class[_]) => if(c.isPrimitive) Some(forName("[" + c.getName.toUpperCase.charAt(0))) else Some(forName("[L" + c.getName + ";"))
           case Some(c : ParameterizedType) => Some(forName("[L" + c.getRawType + ";"))
           case _ => throw new Exception("Never match here")
+        }
+      }else if(clazz.path == "scala.Enumeration.Value"){
+        println("####" + clazz.path) //TODO delete
+        prefix match{
+          case SingleType(_,name) => {
+            println("####-" + name.path) //TODO delete
+            Some(nameMapper(name.path))
+          }
         }
       }else if(genericParams.size == 0){
         Some(nameMapper(clazz.path))
@@ -132,6 +141,23 @@ object ScalaSigUtil {
     ) toMap
   }
 
+  def getCompanionObject(clazz:  Class[_]) : Option[Class[_]] = {
+    if(clazz.getName.endsWith("$")) Some(clazz)
+    else{
+      try{
+        val c = Class.forName(clazz.getName + "$")
+        Some(c)
+      }catch{
+        case e : NoClassDefFoundError => {
+          None
+        }
+        case e : ClassNotFoundException =>
+        {
+          None
+        }
+      }
+    }
+  }
 
 }
 
