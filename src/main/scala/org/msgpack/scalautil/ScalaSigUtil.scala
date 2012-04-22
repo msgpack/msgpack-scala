@@ -139,11 +139,28 @@ object ScalaSigUtil {
     ) toMap
   }
 
-  def getCompanionObject(clazz:  Class[_]) : Option[Class[_]] = {
-    if(clazz.getName.endsWith("$")) Some(clazz)
+  def getCompanionObjectClass(clazz:  Class[_]) : Option[Class[_]] = {
+    if(clazz.getName.endsWith("$")) None
     else{
       try{
         val c = Class.forName(clazz.getName + "$")
+        Some(c)
+      }catch{
+        case e : NoClassDefFoundError => {
+          None
+        }
+        case e : ClassNotFoundException =>
+        {
+          None
+        }
+      }
+    }
+  }
+  def reverseCompanionObjectClass(clazz : Class[_]) : Option[Class[_]] = {
+    if(!clazz.getName.endsWith("$")) None
+    else{
+      try{
+        val c = Class.forName(clazz.getName.substring(0,clazz.getName.length - 1))
         Some(c)
       }catch{
         case e : NoClassDefFoundError => {

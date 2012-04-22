@@ -21,14 +21,16 @@ class EitherTemplate[L,R](leftTemplate : Template[L],rightTemplate : Template[R]
       pk.writeNil()
       return
     }
-    pk.writeArrayBegin(2)
+    pk.writeArrayBegin(3)
     v match{
       case Left(v) => {
         pk.write(false)
         leftTemplate.write(pk,v,false)
+        pk.writeNil()
       }
       case Right(v) => {
         pk.write(true)
+        pk.writeNil()
         rightTemplate.write(pk,v,false)
       }
     }
@@ -42,9 +44,12 @@ class EitherTemplate[L,R](leftTemplate : Template[L],rightTemplate : Template[R]
     }
     u.readArrayBegin()
     val v = if(u.readBoolean()){
+      u.readNil()
       Right(rightTemplate.read(u,null.asInstanceOf[R],false))
     }else{
-      Left(leftTemplate.read(u,null.asInstanceOf[L],false))
+      val l = Left(leftTemplate.read(u,null.asInstanceOf[L],false))
+      u.readNil()
+      l
     }
     u.readArrayEnd()
     v

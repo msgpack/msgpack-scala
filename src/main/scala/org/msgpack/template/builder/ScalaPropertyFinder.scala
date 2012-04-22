@@ -201,7 +201,8 @@ trait ScalaPropertyFinder{
         new ScalaFieldEntry(propInfo._1,
           readFieldOption(propInfo, FieldOption.OPTIONAL),
           getter.getReturnType,
-          ScalaSigUtil.getReturnType(propInfo._2._4).get,
+          ScalaSigUtil.getCompanionObjectClass(
+            ScalaSigUtil.getReturnType(propInfo._2._4).get.asInstanceOf[Class[_]]).get,
           propInfo._2._1,
           propInfo._2._2
         )

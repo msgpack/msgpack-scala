@@ -147,42 +147,6 @@ class ScalaTemplateRegistry extends TemplateRegistry(null){
     new ScalaTemplateBuilderChain(this)
   }
 
-  override def lookup(targetType: Type): Template[_] = {
-
-    try{
-      super.lookup(targetType)
-    }catch{
-      case e : MessageTypeException => {
-        targetType match{
-          case c : Class[_] => {
-            ScalaSigUtil.getCompanionObject(c) match{
-              case Some(com) if classOf[Enumeration].isAssignableFrom(com) => {
-                new EnumerationTemplate(c.asInstanceOf[Class[Enumeration]])
-              }
-              case _ => throw e
-            }
-          }
-          case _ => throw e
-        }
-      }
-    }
-
-    /* TODO which is better ?
-    targetType match{
-      case c : Class[_] => {
-        ScalaSigUtil.getCompanionObject(c) match{
-          case Some(com) if classOf[Enumeration].isAssignableFrom(com) => {
-            new EnumerationTemplate(c.asInstanceOf[Class[Enumeration]])
-          }
-          case _ => {
-            super.lookup(targetType)
-          }
-        }
-      }
-      case _ => super.lookup(targetType)
-    }
-    */
-  }
 }
 
 class ScalaTemplateBuilderChain(registry : TemplateRegistry,forceReflectionMode : Boolean) extends TemplateBuilderChain(registry){
@@ -208,7 +172,7 @@ class ScalaTemplateBuilderChain(registry : TemplateRegistry,forceReflectionMode 
 
     templateBuilders.add(new ArrayTemplateBuilder(registry))
     templateBuilders.add(new OrdinalEnumTemplateBuilder(registry))
-    templateBuilders.add(new DynamicTemplateBuilder(registry))
+    templateBuilders.add(new ScalaEnumTemplateBuilder(registry))
     if (enableDynamicCodeGeneration) {
       forceBuilder = new JavassistScalaTemplateBuilder(registry)
       if (cl != null) {
