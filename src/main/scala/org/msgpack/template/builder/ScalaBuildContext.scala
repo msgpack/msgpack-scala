@@ -276,7 +276,11 @@ class ScalaBuildContext(builder : JavassistScalaTemplateBuilder) extends BuildCo
 
   def readEnumValue(builder : StringBuilder , index : Int , entry : ScalaFieldEntry) = {
     builder.append("""
-  _$$_t.%s_$eq( %s.apply($1.int()));""".format(entry.getName,entry.getType.getName))
+try{
+  _$$_t.%s_$eq( %s.apply($1.int()));
+}catch(Exception e)
+  _$$_t.%s_$eq(null);
+}""".format(entry.getName,entry.getType.getName,entry.getName))
   }
 
 
