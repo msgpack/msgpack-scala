@@ -5,7 +5,7 @@ import xml.XML
 
 object MessagePackScalaBuild extends Build {
   
-  val messagePackVersion = "0.6.6-SNAPSHOT"
+  val messagePackVersion = "0.6.6"
 
 
   override lazy val settings = super.settings ++
