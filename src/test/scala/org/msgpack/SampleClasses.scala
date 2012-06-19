@@ -204,7 +204,7 @@ object MyEnum2 extends EnumExt{
 }
 
 @Message
-class OptionFileds{
+class OptionFields{
   var o1 : Option[Int] = Some(23229)
   var o2 : Option[String] = Some("hoge")
   var l : Either[String,Long] = null

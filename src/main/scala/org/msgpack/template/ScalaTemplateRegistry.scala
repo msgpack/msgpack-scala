@@ -58,6 +58,10 @@ class ScalaTemplateRegistry extends TemplateRegistry(null){
     register(classOf[Seq[_]],new ImmutableListTemplate(anyTemplate))
     register(classOf[scala.collection.immutable.List[_]],new ImmutableListTemplate[Any](anyTemplate))
     register(classOf[java.util.Calendar],new CalendarTemplate)
+    register(None.getClass,new OptionTemplate[Any](anyTemplate))
+    register(classOf[Either[Any,Any]],new EitherTemplate[Any,Any](anyTemplate,anyTemplate))
+    register(classOf[Left[Any,Any]],new EitherTemplate[Any,Any](anyTemplate,anyTemplate))
+    register(classOf[Right[Any,Any]],new EitherTemplate[Any,Any](anyTemplate,anyTemplate))
     //tuples
     register(classOf[Tuple1[_]], new Tuple1Template[Any](anyTemplate))
     register(classOf[Tuple2[_,_]], new Tuple2Template[Any,Any](anyTemplate,anyTemplate))
@@ -108,7 +112,10 @@ class ScalaTemplateRegistry extends TemplateRegistry(null){
     registerGeneric(classOf[scala.collection.mutable.Map[_,_]],
       new GenericMutableMapTemplate[MutableHashMapTemplate[_,_]])
     registerGeneric(classOf[Option[_]],new GenericOptionTemplate)
+    registerGeneric(classOf[Some[_]],new GenericOptionTemplate)
     registerGeneric(classOf[Either[_,_]],new GenericEitherTemplate)
+    registerGeneric(classOf[Left[_,_]],new GenericEitherTemplate)
+    registerGeneric(classOf[Right[_,_]],new GenericEitherTemplate)
 
 
     //tuples

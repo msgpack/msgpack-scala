@@ -66,7 +66,6 @@ object ScalaSigUtil {
 
   def toJavaClass( t : Type , primitive_? : Boolean = true) : Option[JType] = t match{
     case TypeRefType(prefix,clazz , genericParams) => {
-      println("%%%" + clazz.path)
       val nameMapper = if(primitive_?) mapToPrimitiveJavaName else mapToRefJavaName
       if(clazz.path == "scala.Array"){
         toJavaClass(genericParams(0),true) match{
