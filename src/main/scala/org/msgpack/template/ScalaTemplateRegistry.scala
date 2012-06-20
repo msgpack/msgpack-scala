@@ -59,6 +59,8 @@ class ScalaTemplateRegistry extends TemplateRegistry(null){
     register(classOf[scala.collection.immutable.List[_]],new ImmutableListTemplate[Any](anyTemplate))
     register(classOf[java.util.Calendar],new CalendarTemplate)
     register(None.getClass,new OptionTemplate[Any](anyTemplate))
+    register(classOf[Some[_]],new OptionTemplate[Any](anyTemplate))
+    register(classOf[Option[_]],new OptionTemplate[Any](anyTemplate))
     register(classOf[Either[Any,Any]],new EitherTemplate[Any,Any](anyTemplate,anyTemplate))
     register(classOf[Left[Any,Any]],new EitherTemplate[Any,Any](anyTemplate,anyTemplate))
     register(classOf[Right[Any,Any]],new EitherTemplate[Any,Any](anyTemplate,anyTemplate))

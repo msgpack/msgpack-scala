@@ -60,7 +60,10 @@ object ScalaSigUtil {
     methodSymbol.infoType match{
       case NullaryMethodType(returnType) => toJavaClass(returnType)
       case MethodType(returnType,methodParams) => toJavaClass(returnType)
-      case _ => None
+      case trt : TypeRefType => toJavaClass(trt)
+      case _ => {
+        None
+      }
     }
   }
 
@@ -87,7 +90,10 @@ object ScalaSigUtil {
           genericParams.map(p => toJavaClass(p,false).get).toArray))
       }
     }
-    case _ => None
+    case _ => {
+      None
+    }
+
   }
   def forName(name : String) = Class.forName(name)
 

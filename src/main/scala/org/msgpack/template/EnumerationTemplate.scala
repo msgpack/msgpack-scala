@@ -2,6 +2,7 @@ package org.msgpack.template
 
 import org.msgpack.unpacker.Unpacker
 import org.msgpack.packer.Packer
+import java.lang.reflect.InvocationTargetException
 
 /**
  *
@@ -15,7 +16,19 @@ class EnumerationTemplate( e : Class[Enumeration]) extends AbstractTemplate[Enum
   }
 
   def read(u: Unpacker, to: Enumeration#Value, required: Boolean): Enumeration#Value = {
-    e.getMethod("apply",java.lang.Integer.TYPE).invoke(
-      null,new java.lang.Integer(u.readInt())).asInstanceOf[Enumeration#Value]
+    try{
+      e.getMethod("apply",java.lang.Integer.TYPE).invoke(
+        null,new java.lang.Integer(u.readInt())).asInstanceOf[Enumeration#Value]
+    }catch{
+      case e : InvocationTargetException => {
+        e.getCause match{
+          case noSuchElement : NoSuchElementException => {
+            // if not exist value, return null
+            null
+          }
+          case _ => throw e
+        }
+      }
+    }
   }
 }
