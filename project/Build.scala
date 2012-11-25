@@ -31,6 +31,7 @@ object MessagePackScalaBuild extends Build {
 
   lazy val dependsOnScalaVersion = (scalaVersion) { v => {
     val specs = v match{
+      case "2.9.2"  => "org.scala-tools.testing" %% "specs" % "1.6.9" % "test"
       case "2.9.1-1" => "org.scala-tools.testing" % "specs_2.9.1" % "1.6.9" % "test"
       case "2.9.1"  => "org.scala-tools.testing" %% "specs" % "1.6.9" % "test"
       case _ => "org.scala-tools.testing" %% "specs" % "1.6.8" % "test"
@@ -49,6 +50,16 @@ object MessagePackScalaBuild extends Build {
                             libraryDependencies ++= dependencies,
                             libraryDependencies ++= dependenciesForTest,
                             libraryDependencies <++= dependsOnScalaVersion,
+                            publishMavenStyle := true,
+                            publishArtifact in Test := false,
+                            publishTo <<= version { (v: String) =>
+                              val nexus = "https://oss.sonatype.org/"
+                              if (v.trim.endsWith("SNAPSHOT")) 
+                                Some("snapshots" at nexus + "content/repositories/snapshots") 
+                              else
+                                Some("releases"  at nexus + "service/local/staging/deploy/maven2")
+                            },
+                            pomIncludeRepository := { _ => false },
                             pomExtra := loadPomExtra()
                             )
   )
