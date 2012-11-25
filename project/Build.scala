@@ -14,7 +14,7 @@ object MessagePackScalaBuild extends Build {
         name := "msgpack-scala",
         version := messagePackVersion,
         scalaVersion := "2.9.1",
-        crossScalaVersions := Seq("2.9.0","2.9.0-1","2.9.1","2.9.1-1"),
+        crossScalaVersions := Seq("2.9.0-1","2.9.1","2.9.1-1"),
         resolvers ++= Seq(Resolver.mavenLocal),
         parallelExecution in Test := false
       )
@@ -46,9 +46,20 @@ object MessagePackScalaBuild extends Build {
   lazy val root = Project(id = "msgpack-scala",
                           base = file("."),
                           settings = Project.defaultSettings ++ Seq(
+                            description := "MessagePack for Scala",
                             libraryDependencies ++= dependencies,
                             libraryDependencies ++= dependenciesForTest,
                             libraryDependencies <++= dependsOnScalaVersion,
+                            publishMavenStyle := true,
+                            publishArtifact in Test := false,
+                            publishTo <<= version { (v: String) =>
+                              val nexus = "https://oss.sonatype.org/"
+                              if (v.trim.endsWith("SNAPSHOT")) 
+                                Some("snapshots" at nexus + "content/repositories/snapshots") 
+                              else
+                                Some("releases"  at nexus + "service/local/staging/deploy/maven2")
+                            },
+                            pomIncludeRepository := { _ => false },
                             pomExtra := loadPomExtra()
                             )
   )

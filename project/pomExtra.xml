@@ -1,6 +1,4 @@
 <pomExtra>
-    <name>${project.artifactId}</name>
-    <description>MessagePack for Scala ${scala.version}</description>
     <url>https://github.com/msgpack/msgpack-scala</url>
     <inceptionYear>2011</inceptionYear>
     <licenses>
@@ -46,13 +44,6 @@
             </distributionManagement>
         </profile>
     </profiles>
-    <repositories>
-        <repository>
-            <id>msgpack.org</id>
-            <name>MessagePack Repository for Maven</name>
-            <url>http://msgpack.org/maven2/</url>
-        </repository>
-    </repositories>
     <build>
         <sourceDirectory>src/main/scala</sourceDirectory>
         <testSourceDirectory>src/test/scala</testSourceDirectory>
