@@ -1,9 +1,7 @@
 package org.msgpack
 
 import annotation.Message
-import org.specs.Specification
-import org.specs.runner.{JUnitSuiteRunner, JUnit}
-import org.junit.runner.RunWith
+import org.specs2.mutable.{SpecificationWithJUnit, Specification}
 
 /**
  * Test special class for Scala
@@ -11,20 +9,22 @@ import org.junit.runner.RunWith
  * Create: 12/06/20 23:58
  */
 
-@RunWith(classOf[JUnitSuiteRunner])
-class SpecialObjectTest  extends Specification with JUnit {
+class SpecialObjectTest  extends SpecificationWithJUnit {
   import specialobj._
 
   "Option" should{
     "ser/des Some" in{
       val b = ScalaMessagePack.write(Some("aaa"))
-      //ScalaMessagePack.read[Some[String]] must_== Some("aaa") this doesn't work because type info of String is erased at runtime.
-      ScalaMessagePack.read[OptionLike](b) must_== OptionLike(true,"aaa")
+      ScalaMessagePack.read[String](b) must_== "aaa"
+
+      ScalaMessagePack.read[Option[String]](b) must beSome("aaa")
     }
     "ser/des None" in{
+      // None will be null
       val b = ScalaMessagePack.write(None)
-      ScalaMessagePack.read[Option[String]](b) must_== None
-      ScalaMessagePack.read[OptionLike](b) must_== OptionLike(false,null)
+
+      ScalaMessagePack.read[String](b) must beNull
+      ScalaMessagePack.read[Option[String]](b) must beNone
     }
   }
   "Either" should{
@@ -63,10 +63,6 @@ class SpecialObjectTest  extends Specification with JUnit {
 }
 package specialobj{
 
-  @Message
-  case class OptionLike(var some_? : Boolean,var  value : String){
-    def this() = this(false,null)
-  }
   @Message
   case class EitherLike(var right_? : Boolean ,var left : String, var right : String){
     def this() = this(false,null,null)

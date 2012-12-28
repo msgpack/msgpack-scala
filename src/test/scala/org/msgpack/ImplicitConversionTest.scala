@@ -21,8 +21,7 @@ package org.msgpack
 import `type`.Value
 import conversion.RichValue
 import org.junit.runner.RunWith
-import org.specs.Specification
-import org.specs.runner.{JUnit, JUnitSuiteRunner}
+import org.specs2.mutable.{SpecificationWithJUnit, Specification}
 
 /**
  * 
@@ -30,8 +29,7 @@ import org.specs.runner.{JUnit, JUnitSuiteRunner}
  * Create: 11/10/14 13:38
  */
 
-@RunWith(classOf[JUnitSuiteRunner])
-class ImplicitConversionTest extends Specification with JUnit{
+class ImplicitConversionTest extends SpecificationWithJUnit{
 
   "Implicit conversions" should{
     "convert primitives" in{
@@ -62,28 +60,28 @@ class ImplicitConversionTest extends Specification with JUnit{
 
     "convert tuple" in{
       import ScalaMessagePack._
-      writeV( (1,"a")) must notBeNull
-      writeV( (1,"a",false)) must notBeNull
-      writeV( (1,"a",false,2)) must notBeNull
-      writeV( (1,"a",false,2  )) must notBeNull
-      writeV( (1,"a",false,2  ,"hoge")) must notBeNull
-      writeV( (1,"a",false,2  ,"fuga","hoge")) must notBeNull
-      writeV( (1,"a",false,2  ,"fuga","hoge",false)) must notBeNull
-      writeV( (1,"a",false,2  ,"fuga","hoge",false,"a")) must notBeNull
-      writeV( (1,"a",false,2  ,"fuga","hoge",false,"a","b")) must notBeNull
-      writeV( (1,"a",false,2  ,"fuga","hoge",false,"a","b",10)) must notBeNull //tuple10
-      writeV( (1,"a",false,2  ,"fuga","hoge",false,"a","b",10,11)) must notBeNull
-      writeV( (1,"a",false,2  ,"fuga","hoge",false,"a","b",10,11,12)) must notBeNull
-      writeV( (1,"a",false,2  ,"fuga","hoge",false,"a","b",10,11,12,13)) must notBeNull
-      writeV( (1,"a",false,2  ,"fuga","hoge",false,"a","b",10,11,12,13,14)) must notBeNull
-      writeV( (1,"a",false,2  ,"fuga","hoge",false,"a","b",10,11,12,13,14,15)) must notBeNull
-      writeV( (1,"a",false,2  ,"fuga","hoge",false,"a","b",10,11,12,13,14,15,16)) must notBeNull
-      writeV( (1,"a",false,2  ,"fuga","hoge",false,"a","b",10,11,12,13,14,15,16,17)) must notBeNull
-      writeV( (1,"a",false,2  ,"fuga","hoge",false,"a","b",10,11,12,13,14,15,16,17,18)) must notBeNull
-      writeV( (1,"a",false,2  ,"fuga","hoge",false,"a","b",10,11,12,13,14,15,16,17,18,19)) must notBeNull
-      writeV( (1,"a",false,2  ,"fuga","hoge",false,"a","b",10,11,12,13,14,15,16,17,18,19,20)) must notBeNull //tuple20
-      writeV( (1,"a",false,2  ,"fuga","hoge",false,"a","b",10,11,12,13,14,15,16,17,18,19,20,21)) must notBeNull
-      writeV( (1,"a",false,2  ,"fuga","hoge",false,"a","b",10,11,12,13,14,15,16,17,18,19,20,21,22)) must notBeNull
+      writeV( (1,"a")) must not beNull;
+      writeV( (1,"a",false)) must not beNull;
+      writeV( (1,"a",false,2)) must not beNull;
+      writeV( (1,"a",false,2  )) must not beNull;
+      writeV( (1,"a",false,2  ,"hoge")) must not beNull;
+      writeV( (1,"a",false,2  ,"fuga","hoge")) must not beNull;
+      writeV( (1,"a",false,2  ,"fuga","hoge",false)) must not beNull;
+      writeV( (1,"a",false,2  ,"fuga","hoge",false,"a")) must not beNull;
+      writeV( (1,"a",false,2  ,"fuga","hoge",false,"a","b")) must not beNull;
+      writeV( (1,"a",false,2  ,"fuga","hoge",false,"a","b",10)) must not beNull; //tuple10
+      writeV( (1,"a",false,2  ,"fuga","hoge",false,"a","b",10,11)) must not beNull;
+      writeV( (1,"a",false,2  ,"fuga","hoge",false,"a","b",10,11,12)) must not beNull;
+      writeV( (1,"a",false,2  ,"fuga","hoge",false,"a","b",10,11,12,13)) must not beNull;
+      writeV( (1,"a",false,2  ,"fuga","hoge",false,"a","b",10,11,12,13,14)) must not beNull;
+      writeV( (1,"a",false,2  ,"fuga","hoge",false,"a","b",10,11,12,13,14,15)) must not beNull;
+      writeV( (1,"a",false,2  ,"fuga","hoge",false,"a","b",10,11,12,13,14,15,16)) must not beNull;
+      writeV( (1,"a",false,2  ,"fuga","hoge",false,"a","b",10,11,12,13,14,15,16,17)) must not beNull;
+      writeV( (1,"a",false,2  ,"fuga","hoge",false,"a","b",10,11,12,13,14,15,16,17,18)) must not beNull;
+      writeV( (1,"a",false,2  ,"fuga","hoge",false,"a","b",10,11,12,13,14,15,16,17,18,19)) must not beNull;
+      writeV( (1,"a",false,2  ,"fuga","hoge",false,"a","b",10,11,12,13,14,15,16,17,18,19,20)) must not beNull; //tuple20
+      writeV( (1,"a",false,2  ,"fuga","hoge",false,"a","b",10,11,12,13,14,15,16,17,18,19,20,21)) must not beNull;
+      writeV( (1,"a",false,2  ,"fuga","hoge",false,"a","b",10,11,12,13,14,15,16,17,18,19,20,21,22)) must not beNull;
       val data = writeV( (1,"a",false,("nested","tuple")))
       val decoded = readAsValue(data)
       decoded(0).asInt must_== 1

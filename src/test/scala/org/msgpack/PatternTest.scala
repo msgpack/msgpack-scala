@@ -17,12 +17,9 @@
 //
 package org.msgpack
 
-import org.junit.runner.RunWith
-import org.specs.Specification
-import org.specs.runner.{JUnit, JUnitSuiteRunner}
-import org.specs.matcher.Matcher
-import org.junit.Ignore
 import java.util.{Date, Calendar}
+import org.specs2.mutable.SpecificationWithJUnit
+import org.specs2.matcher.{MatchResult, Expectable, Matcher}
 
 /**
  * 
@@ -30,16 +27,14 @@ import java.util.{Date, Calendar}
  * Create: 11/10/13 0:44
  */
 
-@RunWith(classOf[JUnitSuiteRunner])
 class JavassistPatternTest extends PatternTestBase(ScalaMessagePack)
 
 /**
  *
  */
-@RunWith(classOf[JUnitSuiteRunner])
 class ReflectionPatternTest extends PatternTestBase(ScalaMessagePackForReflection)
 
-abstract class PatternTestBase(messagePack : ScalaMessagePackWrapper) extends Specification with JUnit{
+abstract class PatternTestBase(messagePack : ScalaMessagePackWrapper) extends SpecificationWithJUnit{
 
   import messagePack._
 
@@ -56,6 +51,8 @@ abstract class PatternTestBase(messagePack : ScalaMessagePackWrapper) extends Sp
       o.floatVal = 328219.32f
 
       checkOn(o,"intVal","byteVal","shortVal","longVal","doubleVal","floatVal")
+
+      ok
     }
   }
   "CommonTypes" should{
@@ -65,6 +62,8 @@ abstract class PatternTestBase(messagePack : ScalaMessagePackWrapper) extends Sp
       o.date = new Date(12898472378L)
       o.calendar = Calendar.getInstance()
       checkOn(o,"string","date","calendar")
+
+      ok
 
     }
 
@@ -105,6 +104,8 @@ abstract class PatternTestBase(messagePack : ScalaMessagePackWrapper) extends Sp
       o.rootName = "kudo"
       o.rootNum = 238492
       checkOn(o,"targetClassName","rootTraitName","rootTraitNum","rootName","rootNum")
+
+      ok
     }
   }
 
@@ -113,6 +114,8 @@ abstract class PatternTestBase(messagePack : ScalaMessagePackWrapper) extends Sp
       val o = new CustomGetterSetter
       o.myNumber = 382902
       checkOn(o,"myNumber")
+
+      ok
     }
   }
 
@@ -134,12 +137,16 @@ abstract class PatternTestBase(messagePack : ScalaMessagePackWrapper) extends Sp
   "WithCompanion" should{
     "encode / decode" in{
       checkOn(new WithCompanion("saegusa haruka"), "name")
+
+      ok
     }
   }
 
   "ConstructorOverload" should{
     "encode / decode" in{
       checkOn(new ConstructorOverload("futaki kanata"), "name")
+
+      ok
     }
   }
 
@@ -161,6 +168,8 @@ abstract class PatternTestBase(messagePack : ScalaMessagePackWrapper) extends Sp
   "Cycle" should{
     "encode / decode" in{
       checkOn(new CycleA,"name")
+
+      ok
     }
   }
 
@@ -170,6 +179,8 @@ abstract class PatternTestBase(messagePack : ScalaMessagePackWrapper) extends Sp
       e.enum1 = MyEnum.V2
       e.enum2 = MyEnum2.V2
       checkOn(e,"enum1","enum2")
+
+      ok
     }
   }
 
@@ -181,6 +192,8 @@ abstract class PatternTestBase(messagePack : ScalaMessagePackWrapper) extends Sp
       o.l = Left("Hello")
       o.r = Right(23093)
       checkOn(o,"o1","o2","l","r")
+
+      ok
     }
   }
 
@@ -188,6 +201,7 @@ abstract class PatternTestBase(messagePack : ScalaMessagePackWrapper) extends Sp
 
   def checkOn[T <: AnyRef](obj : T , propNames : String*)(implicit manifest : Manifest[T]) : T = {
     val data = pack(obj)
+
     val decode = unpack[T](data)
     decode must hasEqualProps(obj).on(propNames :_*)
     decode
@@ -203,18 +217,34 @@ case class hasEqualProps[T <: AnyRef]( expected : T){
   }
 
   class PropMatcher(propNames : List[String]) extends Matcher[AnyRef]{
-    def apply(a: => AnyRef) : (Boolean,String,String) = {
-      val actual : AnyRef = a
+
+
+    def apply[S <: AnyRef](t: Expectable[S]) : MatchResult[S] = {
+      val actual : AnyRef = t.value
 
       for(propName <- propNames){
         val eV = getValue(expected,propName)
         val aV = getValue(actual,propName)
         if(eV != aV ){
-          return (false,"","prop:%s expect ( %s ) but ( %s )".format(propName,eV , aV))
+          return result(false,"","prop:%s expect ( %s ) but ( %s )".format(propName,eV , aV),t)
         }
       }
-      (true,"ok","")
+      result(true,"ok","",t)
+
     }
+
+//    def apply(a: => AnyRef) : (Boolean,String,String) = {
+//      val actual : AnyRef = a
+//
+//      for(propName <- propNames){
+//        val eV = getValue(expected,propName)
+//        val aV = getValue(actual,propName)
+//        if(eV != aV ){
+//          return (false,"","prop:%s expect ( %s ) but ( %s )".format(propName,eV , aV))
+//        }
+//      }
+//      (true,"ok","")
+//    }
 
     def getValue( obj : AnyRef, propName : String) = {
       obj.getClass.getMethod(propName).invoke(obj)

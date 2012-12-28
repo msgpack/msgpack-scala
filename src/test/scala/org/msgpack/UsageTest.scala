@@ -20,9 +20,7 @@ package org.msgpack
 import `type`.Value
 import annotation.Message
 import org.junit.runner.RunWith
-import org.specs.runner.{JUnit, JUnitSuiteRunner}
-import org.specs._
-import org.specs.matcher._
+import org.specs2.mutable.SpecificationWithJUnit
 
 /**
  * 
@@ -30,8 +28,7 @@ import org.specs.matcher._
  * Create: 11/10/12 23:17
  */
 
-@RunWith(classOf[JUnitSuiteRunner])
-class UsageTest extends Specification with JUnit{
+class UsageTest extends SpecificationWithJUnit{
 
   "Normal usage" should{
 
@@ -43,7 +40,8 @@ class UsageTest extends Specification with JUnit{
       user.profile.gender = 2
 
       val data = ScalaMessagePack.write(user)
-      data must notBeNull
+      data must not beNull
+
       for(b <- data){
         print("%02x ".format(b))
       }

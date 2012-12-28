@@ -193,3 +193,10 @@ class MyParameterizedType(rowClass : Class[_],paramClasses : Array[JType]) exten
     rowClass.toString + "<" + paramClasses.mkString(",") + ">"
   }
 }
+
+object MyParameterizedType{
+  def apply(m : Manifest[_]) : MyParameterizedType = {
+    new MyParameterizedType(m.erasure,m.typeArguments.map(MyParameterizedType.apply(_)).toArray)
+
+  }
+}

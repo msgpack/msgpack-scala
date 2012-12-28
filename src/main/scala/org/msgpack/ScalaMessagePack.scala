@@ -19,6 +19,7 @@ package org.msgpack
 
 import `type`.Value
 import conversion.ValueConversions
+import scalautil.MyParameterizedType
 import template._
 import collection.mutable.{MutableList, LinkedList}
 import collection.mutable.{Map => MMap, HashMap => MHashMap}
@@ -80,25 +81,35 @@ trait ScalaMessagePackWrapper{
   }
 
   def read[T]( data : Array[Byte])(implicit manifest : Manifest[T]) : T = {
-    messagePack.read(data, manifest.erasure.asInstanceOf[Class[T]])
+    if(manifest.typeArguments.size > 0){
+      val t = messagePack.lookup(MyParameterizedType(manifest))
+      messagePack.read(data,t).asInstanceOf[T]
+    }else{
+      messagePack.read(data, manifest.erasure.asInstanceOf[Class[T]])
+    }
   }
 
   def read[T](data : InputStream)(implicit manifest : Manifest[T]) : T = {
-    messagePack.read(data, manifest.erasure.asInstanceOf[Class[T]])
+    if(manifest.typeArguments.size > 0){
+      val t = messagePack.lookup(MyParameterizedType(manifest))
+      messagePack.read(data,t).asInstanceOf[T]
+    }else{
+      messagePack.read(data, manifest.erasure.asInstanceOf[Class[T]])
+    }
   }
 
   /**
    * This is synonym for read.
    */
   def unpack[T]( data : Array[Byte])(implicit manifest : Manifest[T]) : T = {
-    messagePack.read(data, manifest.erasure.asInstanceOf[Class[T]])
+    read(data)(manifest)
   }
 
   /**
    * This is synonym for read.
    */
   def unpack[T](data : InputStream)(implicit manifest : Manifest[T]) : T = {
-    messagePack.read(data, manifest.erasure.asInstanceOf[Class[T]])
+    read(data)(manifest)
   }
 
   def readTo[T](data : Array[Byte], obj : T) : T = {

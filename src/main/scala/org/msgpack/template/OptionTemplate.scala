@@ -2,6 +2,7 @@ package org.msgpack.template
 
 import org.msgpack.unpacker.Unpacker
 import org.msgpack.packer.Packer
+import org.msgpack.`type`.ValueType
 
 /**
  *
@@ -13,29 +14,38 @@ class OptionTemplate[T]( someTemplate : Template[T]) extends AbstractTemplate[Op
   def write(pk: Packer, v: Option[T], required: Boolean) {
     v match{
       case Some(t) => {
-        pk.writeArrayBegin(2)
-        pk.write(true)
         someTemplate.write(pk,t,true)
-        pk.writeArrayEnd()
+//        pk.writeArrayBegin(2)
+//        pk.write(true)
+//        someTemplate.write(pk,t,true)
+//        pk.writeArrayEnd()
       }
       case None | null => {
-        pk.writeArrayBegin(2)
-        pk.write(false)
         pk.writeNil()
-        pk.writeArrayEnd()
+//        pk.writeArrayBegin(2)
+//        pk.write(false)
+//        pk.writeNil()
+//        pk.writeArrayEnd()
       }
     }
   }
 
   def read(u: Unpacker, to: Option[T], required: Boolean): Option[T] = {
-    u.readArrayBegin()
-    val op = if (u.readBoolean()){
-      Some(someTemplate.read(u,null.asInstanceOf[T],false))
-    }else{
+    if(u.getNextType == ValueType.NIL){
       u.readNil()
       None
+    }else{
+      println("###" + u.getNextType )
+      Some(someTemplate.read(u,null.asInstanceOf[T],false))
     }
-    u.readArrayEnd()
-    op
+//    u.readArrayBegin()
+//    val op = if (u.readBoolean()){
+//      Some(someTemplate.read(u,null.asInstanceOf[T],false))
+//    }else{
+//      u.readNil()
+//      None
+//    }
+//    u.readArrayEnd()
+//    op
   }
 }

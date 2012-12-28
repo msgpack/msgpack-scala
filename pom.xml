@@ -59,7 +59,7 @@
             </activation>
             <properties>
                 <scala.version>2.9.0</scala.version>
-                <specs.version>1.6.8</specs.version>
+                <specs.version>1.8.2</specs.version>
             </properties>
         </profile>
         <profile>
@@ -72,7 +72,7 @@
             </activation>
             <properties>
                 <scala.version>2.9.0-1</scala.version>
-                <specs.version>1.6.8</specs.version>
+                <specs.version>1.8.2</specs.version>
             </properties>
         </profile>
         <profile>
@@ -86,7 +86,7 @@
             </activation>
             <properties>
                 <scala.version>2.9.1</scala.version>
-                <specs.version>1.6.9</specs.version>
+                <specs.version>1.12.3</specs.version>
             </properties>
         </profile>
     </profiles>
@@ -128,8 +128,8 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.scala-tools.testing</groupId>
-            <artifactId>specs_${scala.version}</artifactId>
+            <groupId>org.specs2</groupId>
+            <artifactId>specs2_${scala.version}</artifactId>
             <version>${specs.version}</version>
             <scope>test</scope>
         </dependency>

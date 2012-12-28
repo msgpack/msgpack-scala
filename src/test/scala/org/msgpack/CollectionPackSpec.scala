@@ -17,11 +17,8 @@
 //
 package org.msgpack
 
-import org.junit.runner.RunWith
-import org.specs._
-import org.specs.matcher._
-import org.specs.runner.{ JUnitSuiteRunner, JUnit }
 import scala.collection.mutable.{ListBuffer, LinkedList}
+import org.specs2.mutable.SpecificationWithJUnit
 
 //import org.scalacheck.Gen
 
@@ -34,8 +31,7 @@ import scala.collection.mutable.{ListBuffer, LinkedList}
  * For more information on how to write or run specifications, please visit: http://code.google.com/p/specs.
  *
  */
-@RunWith(classOf[JUnitSuiteRunner])
-class CollectionPackTest extends Specification with JUnit  {
+class CollectionPackTest extends SpecificationWithJUnit  {
 
   "ScalaMessagePack" should {
     "pack scala-list" in {

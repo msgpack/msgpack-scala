@@ -5,7 +5,7 @@ import xml.XML
 
 object MessagePackScalaBuild extends Build {
   
-  val messagePackVersion = "0.6.7-SNAPSHOT"
+  val messagePackVersion = "0.6.7"
 
 
   override lazy val settings = super.settings ++
@@ -14,7 +14,7 @@ object MessagePackScalaBuild extends Build {
         name := "msgpack-scala",
         version := messagePackVersion,
         scalaVersion := "2.9.1",
-        crossScalaVersions := Seq("2.9.0","2.9.0-1","2.9.1","2.9.1-1"),
+        crossScalaVersions := Seq("2.9.0","2.9.0-1","2.9.1","2.9.1-1","2.9.2"),
         resolvers ++= Seq(Resolver.mavenLocal),
         parallelExecution in Test := false
       )
@@ -31,10 +31,10 @@ object MessagePackScalaBuild extends Build {
 
   lazy val dependsOnScalaVersion = (scalaVersion) { v => {
     val specs = v match{
-      case "2.9.2"  => "org.scala-tools.testing" %% "specs" % "1.6.9" % "test"
-      case "2.9.1-1" => "org.scala-tools.testing" % "specs_2.9.1" % "1.6.9" % "test"
-      case "2.9.1"  => "org.scala-tools.testing" %% "specs" % "1.6.9" % "test"
-      case _ => "org.scala-tools.testing" %% "specs" % "1.6.8" % "test"
+      case "2.9.2"  => "org.specs2" %% "specs2" % "1.12.3" % "test"
+      case "2.9.1-1" => "org.specs2" %% "specs2" % "1.12.3" % "test"
+      case "2.9.1"  => "org.specs2" %% "specs2" % "1.12.3" % "test"
+      case _ => "org.specs2" %% "specs2" % "1.8.2" % "test"
     }
     Seq(
       "org.scala-lang" % "scalap" % v,
