@@ -254,13 +254,14 @@ class ScalaBuildContext(builder : JavassistScalaTemplateBuilder) extends BuildCo
   }
 
   def readOptionalMethod(builder : StringBuilder , index : Int , entry : ScalaFieldEntry) = {
-    builder.append("""
-  if ( $1.trySkipNil()) {
-    _$$_t.%s_$eq(null);
-  }else{
-  """.format(entry.getName()))
+//    builder.append("""
+//  if ( $1.trySkipNil()) {
+//    _$$_t.%s_$eq(null);
+//  }else{
+//  """.format(entry.getName()))
+//    readAnyRef(builder,index,entry)
+//    builder.append("\n  }")
     readAnyRef(builder,index,entry)
-    builder.append("\n  }")
   }
 
   def readPrimitive(builder : StringBuilder , index : Int , entry : ScalaFieldEntry) = {

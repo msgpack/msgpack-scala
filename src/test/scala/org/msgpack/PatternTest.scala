@@ -186,6 +186,7 @@ abstract class PatternTestBase(messagePack : ScalaMessagePackWrapper) extends Sp
 
   "Option" should{
     "encode / decode" in{
+
       val o = new OptionFields
       o.o1 = Some(28932)
       o.o2 = None

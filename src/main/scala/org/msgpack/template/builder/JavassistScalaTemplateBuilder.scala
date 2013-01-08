@@ -74,9 +74,18 @@ class JavassistScalaTemplateBuilder(_registry : TemplateRegistry)
   override def createBuildContext() = {
     new ScalaBuildContext(this)
   }
+
 }
 
 abstract class JavassistScalaTemplate[T](var targetClass : Class[T], var templates : Array[Template[_]]) extends AbstractTemplate[T]{
 
+  override def toString() = {
+
+    "Template for:" + targetClass + "\n" +
+    "Fields:\n" +
+    templates.map(t => {
+      t.toString
+    }).mkString("\n")
+  }
 
 }

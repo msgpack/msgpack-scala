@@ -190,7 +190,7 @@ trait ScalaPropertyFinder{
     getter.getGenericReturnType match{
       case pt : ParameterizedType => {
         new ScalaFieldEntry(propInfo._1,
-          readFieldOption(propInfo, FieldOption.OPTIONAL),
+          readFieldOption(propInfo, FieldOption.DEFAULT),
           getter.getReturnType,
           ScalaSigUtil.getReturnType(propInfo._2._4).get,
           propInfo._2._1,
@@ -199,7 +199,7 @@ trait ScalaPropertyFinder{
       }
       case t if t.asInstanceOf[Class[_]].getName == "scala.Enumeration$Value" => {
         new ScalaFieldEntry(propInfo._1,
-          readFieldOption(propInfo, FieldOption.OPTIONAL),
+          readFieldOption(propInfo, FieldOption.DEFAULT),
           getter.getReturnType,
           ScalaSigUtil.getCompanionObjectClass(
             ScalaSigUtil.getReturnType(propInfo._2._4).get.asInstanceOf[Class[_]]).get,
@@ -209,7 +209,7 @@ trait ScalaPropertyFinder{
       }
       case t => {
         new ScalaFieldEntry(propInfo._1,
-          readFieldOption(propInfo, FieldOption.OPTIONAL),
+          readFieldOption(propInfo, FieldOption.DEFAULT),
           getter.getReturnType,
           t,
           propInfo._2._1,
@@ -234,7 +234,7 @@ trait ScalaPropertyFinder{
       if (readValueType(prop).isPrimitive) {
         FieldOption.NOTNULLABLE
       } else {
-        FieldOption.OPTIONAL
+        implicitOption
       }
     }
 

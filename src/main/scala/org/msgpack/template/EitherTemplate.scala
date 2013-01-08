@@ -39,7 +39,7 @@ class EitherTemplate[L,R](leftTemplate : Template[L],rightTemplate : Template[R]
   }
 
   def read(u: Unpacker, to: Either[L, R], required: Boolean): Either[L, R] = {
-    if(!required && !u.trySkipNil){
+    if(!required && u.trySkipNil){
       return null.asInstanceOf[Either[L,R]]
     }
     u.readArrayBegin()

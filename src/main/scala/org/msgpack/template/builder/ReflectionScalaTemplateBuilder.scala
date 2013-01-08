@@ -116,6 +116,7 @@ class ReflectionScalaTemplate[T <: AnyRef](var targetClass : Class[T],
           unpacker.skip
         }
         else if (tmpl.entry.isOptional && unpacker.trySkipNil) {
+          println("Skipped !" + tmpl)
         }
         else {
           tmpl.asInstanceOf[Template[T]].read(unpacker, to, false)
@@ -172,5 +173,9 @@ class ReflectionScalaFieldTemplate[T <: AnyRef](val entry : ScalaFieldEntry, tem
 
   def write(pk: Packer, v: T, required: Boolean) = {
     template.write(pk,v,required)
+  }
+
+  override def toString = {
+    "ReflectionScalaFieldTemplate for " + template
   }
 }

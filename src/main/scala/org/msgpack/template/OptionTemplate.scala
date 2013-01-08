@@ -15,17 +15,9 @@ class OptionTemplate[T]( someTemplate : Template[T]) extends AbstractTemplate[Op
     v match{
       case Some(t) => {
         someTemplate.write(pk,t,true)
-//        pk.writeArrayBegin(2)
-//        pk.write(true)
-//        someTemplate.write(pk,t,true)
-//        pk.writeArrayEnd()
       }
       case None | null => {
         pk.writeNil()
-//        pk.writeArrayBegin(2)
-//        pk.write(false)
-//        pk.writeNil()
-//        pk.writeArrayEnd()
       }
     }
   }
@@ -35,17 +27,8 @@ class OptionTemplate[T]( someTemplate : Template[T]) extends AbstractTemplate[Op
       u.readNil()
       None
     }else{
-      println("###" + u.getNextType )
-      Some(someTemplate.read(u,null.asInstanceOf[T],false))
+      val v = Some(someTemplate.read(u,null.asInstanceOf[T],false))
+      v
     }
-//    u.readArrayBegin()
-//    val op = if (u.readBoolean()){
-//      Some(someTemplate.read(u,null.asInstanceOf[T],false))
-//    }else{
-//      u.readNil()
-//      None
-//    }
-//    u.readArrayEnd()
-//    op
   }
 }
