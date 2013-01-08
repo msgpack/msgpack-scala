@@ -13,8 +13,8 @@ object MessagePackScalaBuild extends Build {
         organization := "org.msgpack",
         name := "msgpack-scala",
         version := messagePackVersion,
-        scalaVersion := "2.9.1",
-        crossScalaVersions := Seq("2.9.0","2.9.0-1","2.9.1","2.9.1-1","2.9.2"),
+        scalaVersion := "2.9.2",
+        crossScalaVersions := Seq("2.9.0-1","2.9.1","2.9.1-1","2.9.2"),
         resolvers ++= Seq(Resolver.mavenLocal),
         parallelExecution in Test := false
       )
@@ -26,7 +26,7 @@ object MessagePackScalaBuild extends Build {
   
   lazy val dependenciesForTest = Seq(
     "junit" % "junit" % "4.8.1" % "test",
-    "log4j" % "log4j" % "1.2.16" % "test"
+    "org.slf4j" % "slf4j-nop" % "1.7.2" % "test"
   )
 
   lazy val dependsOnScalaVersion = (scalaVersion) { v => {
@@ -34,6 +34,8 @@ object MessagePackScalaBuild extends Build {
       case "2.9.2"  => "org.specs2" %% "specs2" % "1.12.3" % "test"
       case "2.9.1-1" => "org.specs2" %% "specs2" % "1.12.3" % "test"
       case "2.9.1"  => "org.specs2" %% "specs2" % "1.12.3" % "test"
+      case "2.9.0-1"  => "org.specs2" %% "specs2" % "1.8.2" % "test"
+      case "2.9.0"  => "org.specs2" %% "specs2" % "1.7.1" % "test"
       case _ => "org.specs2" %% "specs2" % "1.8.2" % "test"
     }
     Seq(
