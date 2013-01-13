@@ -43,11 +43,15 @@ class ScalaTemplateRegistry extends TemplateRegistry(null){
     val at = new AnyTemplate[Any](this)
     def anyTemplate[T] = at.asInstanceOf[Template[T]]
     register(new ImmutableListTemplate[Any](anyTemplate))
+    register(new ImmutableSetTemplate[Any](anyTemplate))
     register(new ImmutableMapTemplate(anyTemplate,anyTemplate))
     register(new DoubleLinkedListTemplate(anyTemplate))
     register(new LinkedListTemplate(anyTemplate))
     register(new ListBufferTemplate(anyTemplate))
     register(new MutableListCTemplate(anyTemplate))
+    register(new MutableSetCTemplate(anyTemplate))
+    register(new HashSetTemplate(anyTemplate))
+    register(new LinkedHashSetTemplate(anyTemplate))
     register(new MutableHashMapTemplate(anyTemplate,anyTemplate))
     register(new MutableListMapTemplate(anyTemplate,anyTemplate))
     register(new MutableLinkedHashMapTemplate(anyTemplate,anyTemplate))
@@ -55,7 +59,12 @@ class ScalaTemplateRegistry extends TemplateRegistry(null){
     new MutableHashMapTemplate(anyTemplate,anyTemplate))
     register(classOf[scala.collection.mutable.Seq[_]],
       new LinkedListTemplate(anyTemplate))
+    register(classOf[scala.collection.mutable.Set[_]],
+      new LinkedHashSetTemplate(anyTemplate))
+    register(classOf[scala.collection.mutable.Set[_]],
+      new HashSetTemplate(anyTemplate))
     register(classOf[Seq[_]],new ImmutableListTemplate(anyTemplate))
+    register(classOf[Set[_]],new ImmutableSetTemplate(anyTemplate))
     register(classOf[scala.collection.immutable.List[_]],new ImmutableListTemplate[Any](anyTemplate))
     register(classOf[java.util.Calendar],new CalendarTemplate)
     register(None.getClass,new OptionTemplate[Any](anyTemplate))
@@ -91,6 +100,7 @@ class ScalaTemplateRegistry extends TemplateRegistry(null){
     registerGeneric(classOf[scala.collection.immutable.List[_]],new GenericImmutableListTemplate())
     registerGeneric(classOf[scala.collection.immutable.Map[_,_]],new GenericImmutableMapTemplate())
     registerGeneric(classOf[scala.collection.immutable.Seq[_]],new GenericImmutableListTemplate())
+    registerGeneric(classOf[scala.collection.immutable.Set[_]],new GenericImmutableSetTemplate())
     registerGeneric(classOf[scala.collection.Seq[_]],new GenericImmutableListTemplate())
     registerGeneric(classOf[Seq[_]],new GenericImmutableListTemplate())
 
@@ -104,6 +114,12 @@ class ScalaTemplateRegistry extends TemplateRegistry(null){
       new GenericMutableListTemplate[LinkedListTemplate[_]]())
     registerGeneric(classOf[scala.collection.mutable.Seq[_]],
       new GenericMutableListTemplate[LinkedListTemplate[_]]())
+    registerGeneric(classOf[scala.collection.mutable.Set[_]],
+      new GenericMutableSetTemplate[MutableSetCTemplate[_]]())
+    registerGeneric(classOf[HashSet[_]],
+      new GenericMutableSetTemplate[HashSetTemplate[_]]())
+    registerGeneric(classOf[LinkedHashSet[_]],
+      new GenericMutableSetTemplate[LinkedHashSetTemplate[_]]())
 
     registerGeneric(classOf[LinkedHashMap[_,_]],
       new GenericMutableMapTemplate[MutableLinkedHashMapTemplate[_,_]])

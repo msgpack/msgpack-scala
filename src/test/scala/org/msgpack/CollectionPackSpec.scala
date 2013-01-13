@@ -18,6 +18,7 @@
 package org.msgpack
 
 import scala.collection.mutable.{ListBuffer, LinkedList}
+import scala.collection.mutable.{Set => MutableSet, LinkedHashSet, HashSet}
 import org.specs2.mutable.SpecificationWithJUnit
 
 //import org.scalacheck.Gen
@@ -74,6 +75,34 @@ class CollectionPackTest extends SpecificationWithJUnit  {
 
 
     }
+    "pack scala-set" in {
+      val c = new ClassWithSet
+
+      c.immutable = Set("z") ++ Set("a","b","c")
+      c.mutable1 = MutableSet("a","b","d")
+      c.mutable2 ++= LinkedHashSet("gh","fjei")
+      c.mutable3 = HashSet("fdk","fei")
+
+      val b = ScalaMessagePack.write(c)
+      val des = ScalaMessagePack.read[ClassWithSet](b)
+
+      des must hasEqualProps(c).on("immutable","mutable1","mutable2","mutable3")
+    }
+    "pack scala-primitive-type-set" in {
+      val c = new ClassWithPrimitiveTypeSet
+
+      c.intSet = Set(1,5,2)
+      c.longSet = Set(80L,23L,19381298L)
+      c.boolSet = Set(false,true)
+      c.floatSet = Set(2.0f,32f)
+      c.doubleSet = Set(1.0,482.92)
+
+      val b = ScalaMessagePack.write(c)
+      val des = ScalaMessagePack.read[ClassWithPrimitiveTypeSet](b)
+
+      des must hasEqualProps(c).on("intSet","longSet","boolSet","floatSet","doubleSet")
+    }
+    
     "pack scala-map" in {
       val c = new ClassWithMap
       c.immutable = Map("a" -> "hoge","b" -> "fuga","c" -> "hehe")
