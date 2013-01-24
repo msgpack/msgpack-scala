@@ -155,7 +155,7 @@ trait ValueConversions{
       array(i + 1) = objToValue(v._2)
       i+=2
     }
-    ValueFactory.createMapValue()
+    ValueFactory.createMapValue(array)
   }
 
   def objToValue( v : Any) : Value = {
