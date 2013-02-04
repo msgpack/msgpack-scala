@@ -132,6 +132,17 @@ class ImplicitConversionTest extends SpecificationWithJUnit{
 
     }
 
+    "map" in{
+      import ScalaMessagePack._
+
+      val v = Map("a" -> 1, "b" -> 2)
+      val data = writeV(v)
+      val decoded = readAsValue(data).toValueMap
+      val aValue: Int = decoded("a")
+      aValue must_== 1
+      val bValue: Int = decoded("b")
+      bValue must_== 2
+    }
 
   }
 
