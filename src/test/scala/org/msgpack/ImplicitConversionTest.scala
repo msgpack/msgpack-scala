@@ -133,6 +133,16 @@ class ImplicitConversionTest extends SpecificationWithJUnit{
     }
 
 
+    "convert value to tuple using RichValue#as" in{
+      import ScalaMessagePack._
+
+      val t = (1,"foo")
+      val data = writeV(t)
+      val decoded = readAsValue(data)
+      val richValue : RichValue = decoded
+      val r = richValue.as[(Int,String)]
+      r must_== t
+    }
   }
 
 
