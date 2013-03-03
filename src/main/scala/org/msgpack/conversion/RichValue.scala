@@ -18,6 +18,7 @@
 
 package org.msgpack.conversion
 
+import org.msgpack.scalautil.MyParameterizedType
 import org.msgpack.MessagePack
 import org.msgpack.`type`.{ValueFactory, Value}
 
@@ -60,7 +61,8 @@ class RichValue(messagePack : MessagePack,value : Value){
   }
 
   def as[T](implicit manifest : Manifest[T]) : T = {
-    messagePack.convert(value,manifest.erasure.asInstanceOf[Class[T]])
+    val t = messagePack.lookup(MyParameterizedType(manifest))
+    messagePack.convert(value, t).asInstanceOf[T]
   }
 
   def asMap[K,V](implicit keyManife : Manifest[K] , valueManife : Manifest[V]) : Map[K,V] = {
