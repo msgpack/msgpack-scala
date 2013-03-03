@@ -147,12 +147,12 @@ trait ValueConversions{
     ValueFactory.createArrayValue(array)
   }
 
-  implicit def mapToValue( map : Map[Any,Any]) : Value = {
+  implicit def mapToValue[K <% Value, V <% Value](map : Map[K,V]) : Value = {
     val array = new Array[Value](map.size * 2)
     var i = 0
     for(v <- map){
-      array(i) = objToValue(v._1)
-      array(i + 1) = objToValue(v._2)
+      array(i) = v._1
+      array(i + 1) = v._2
       i+=2
     }
     ValueFactory.createMapValue(array)
