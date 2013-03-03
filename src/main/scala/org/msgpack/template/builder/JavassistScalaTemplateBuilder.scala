@@ -32,8 +32,13 @@ import org.msgpack.annotation._
  * Create: 11/10/12 16:39
  */
 
-class JavassistScalaTemplateBuilder(_registry : TemplateRegistry)
-  extends JavassistTemplateBuilder(_registry) with ScalaObjectMatcher with ScalaPropertyFinder{
+class JavassistScalaTemplateBuilder(_registry : TemplateRegistry, classLoader : ClassLoader)
+  extends JavassistTemplateBuilder(_registry,classLoader) with ScalaObjectMatcher with ScalaPropertyFinder{
+
+
+  def this(r : TemplateRegistry) = this(r,null)
+
+
 
   val classPool = this.pool
 

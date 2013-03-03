@@ -199,16 +199,20 @@ class ScalaTemplateBuilderChain(registry : TemplateRegistry,forceReflectionMode 
     templateBuilders.add(new OrdinalEnumTemplateBuilder(registry))
     templateBuilders.add(new ScalaEnumTemplateBuilder(registry))
     if (enableDynamicCodeGeneration) {
-      forceBuilder = new JavassistScalaTemplateBuilder(registry)
-      if (cl != null) {
-        forceBuilder.asInstanceOf[JavassistBeansTemplateBuilder].addClassLoader(cl)
+
+      forceBuilder = if (cl != null) {
+        new JavassistScalaTemplateBuilder(registry,cl)
+      }else{
+        new JavassistScalaTemplateBuilder(registry)
+
       }
 
       val b = forceBuilder
       templateBuilders.add(b)
-      val builder = new JavassistTemplateBuilder(registry)
-      if (cl != null) {
-        builder.addClassLoader(cl)
+      val builder = if(cl != null ) {
+        new JavassistTemplateBuilder(registry,cl)
+      }else{
+        new JavassistTemplateBuilder(registry)
       }
       forceBuilder = builder
       templateBuilders.add(builder)
