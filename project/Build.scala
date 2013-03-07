@@ -14,7 +14,7 @@ object MessagePackScalaBuild extends Build {
         name := "msgpack-scala",
         version := messagePackVersion,
         scalaVersion := "2.9.2",
-        crossScalaVersions := Seq("2.9.0-1","2.9.1","2.9.1-1","2.9.2"),
+        crossScalaVersions := Seq("2.9.0-1","2.9.1","2.9.1-1","2.9.2", "2.10.0"),
         resolvers ++= Seq(Resolver.mavenLocal),
         parallelExecution in Test := false
       )
@@ -36,6 +36,7 @@ object MessagePackScalaBuild extends Build {
       case "2.9.1"  => "org.specs2" %% "specs2" % "1.12.3" % "test"
       case "2.9.0-1"  => "org.specs2" %% "specs2" % "1.8.2" % "test"
       case "2.9.0"  => "org.specs2" %% "specs2" % "1.7.1" % "test"
+      case x if x.startsWith("2.10") => "org.specs2" %% "specs2" % "1.14" % "test"
       case _ => "org.specs2" %% "specs2" % "1.8.2" % "test"
     }
     Seq(
