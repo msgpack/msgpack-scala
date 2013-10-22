@@ -117,7 +117,8 @@ object ScalaSigUtil {
     "scala.Predef.Set" -> classOf[Set[_]],
     "scala.package.List" -> classOf[List[_]],
     "scala.Unit" ->classOf[java.lang.Void],
-    "scala.package.Seq" -> classOf[Seq[_]]
+    "scala.package.Seq" -> classOf[Seq[_]],
+    "scala.package.Either" -> classOf[Either[_,_]]
   )
 
   object mapToRefJavaName extends MapToJavaName{
