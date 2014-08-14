@@ -1,5 +1,4 @@
 <pomExtra>
-    <description>MessagePack for Scala.</description>
     <url>https://github.com/msgpack/msgpack-scala</url>
     <inceptionYear>2011</inceptionYear>
     <licenses>

@@ -16,7 +16,7 @@ Quick Start is available at [MessagePack official site](http://wiki.msgpack.org/
 
 ### By using sbt
 
-This project also supports sbt 0.12.2
+This project also supports sbt 0.13.5
 To build JAR file of MessagePack for Scala, please type the following command:
 
     $ package
