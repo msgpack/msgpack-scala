@@ -45,24 +45,6 @@ class CommonTypes{
 
 }
 
-/* not support enumeration now
-@Message
-class Enums{
-
-  @ScalaEnum("org.msgpack.Gender")
-  var gender : Gender.Value = Gender.Male
-  @ScalaEnum("org.msgpack.Country")
-  var country : Country.Value = Country.Japan
-
-}
-object Gender extends Enumeration{
-  val Male = Value(1)
-  val Female = Value(2)
-}
-object Country extends Enumeration{
-  val Japan = Value(218,"japan")
-}
-*/
 
 
 
