@@ -9,14 +9,15 @@ object MessagePackScalaBuild extends Build {
   
   val messagePackVersion = "0.6.11"
 
+  private[this] final val scala211 = "2.11.6"
 
   override lazy val settings = super.settings ++
       Seq(
         organization := "org.msgpack",
         name := "msgpack-scala",
         version := messagePackVersion,
-        scalaVersion := "2.11.2",
-        crossScalaVersions := Seq("2.9.1-1","2.9.2","2.9.3","2.10.4","2.11.2"), // After 2.10 ,binaries are compatible.So don't need to crossCompile.(tests are passed even comment outed versions.)
+        scalaVersion := scala211,
+        crossScalaVersions := Seq("2.9.1-1","2.9.2","2.9.3","2.10.5",scala211), // After 2.10 ,binaries are compatible.So don't need to crossCompile.(tests are passed even comment outed versions.)
         resolvers ++= Seq(Resolver.mavenLocal),
         parallelExecution in Test := false
       )
