@@ -20,6 +20,13 @@ Add dependency.
 
 ### Make intellij project
 
+
+### >= IntelliJ IDEA 13 
+
+You can import sbt file.
+
+### < IntelliJ IDEA 13
+
 Please type the following command.Then intellij project will be generated.
 
     $ sbt gen-idea
