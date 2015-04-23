@@ -1,5 +1,7 @@
 # MessagePack for Scala
 
+[![Build Status](https://travis-ci.org/msgpack/msgpack-scala.svg?branch=master)](https://travis-ci.org/msgpack/msgpack-scala)
+
 An implementation of [MessagePack](http://msgpack.org/) for Scala.
 
 ## Requirement
