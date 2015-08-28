@@ -7,7 +7,7 @@ import xerial.sbt.Sonatype.sonatypeSettings
 
 object MessagePackScalaBuild extends Build {
   
-  val messagePackVersion = "0.6.11"
+  val messagePackVersion = "0.6.12"
 
   private[this] final val scala211 = "2.11.6"
 
