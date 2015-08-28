@@ -13,7 +13,7 @@ An implementation of [MessagePack](http://msgpack.org/) for Scala.
 
 Add dependency.
 
-    libraryDependencies += "org.msgpack" %% "msgpack-scala" % "0.6.11"
+    libraryDependencies += "org.msgpack" %% "msgpack-scala" % "0.6.12"
 
 
 ## For developer
