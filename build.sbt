@@ -14,7 +14,7 @@ lazy val settings =
     name := "msgpack-scala",
     version := messagePackVersion,
     scalaVersion := scala211,
-    crossScalaVersions := Seq("2.9.1-1","2.9.2","2.9.3","2.10.5",scala211), // After 2.10 ,binaries are compatible.So don't need to crossCompile.(tests are passed even comment outed versions.)
+    crossScalaVersions := Seq("2.10.5",scala211), // After 2.10 ,binaries are compatible.So don't need to crossCompile.(tests are passed even comment outed versions.)
     resolvers ++= Seq(Resolver.mavenLocal),
     parallelExecution in Test := false
   )
@@ -31,12 +31,6 @@ lazy val dependenciesForTest = Seq(
 
 lazy val dependsOnScalaVersion = (scalaVersion) { v => {
   val specs = v match{
-    case "2.9.3"  => "org.specs2" %% "specs2" % "1.12.4.1" % "test"
-    case "2.9.2"  => "org.specs2" %% "specs2" % "1.12.3" % "test"
-    case "2.9.1-1" => "org.specs2" %% "specs2" % "1.12.3" % "test"
-    case "2.9.1"  => "org.specs2" %% "specs2" % "1.12.3" % "test"
-    case "2.9.0-1"  => "org.specs2" %% "specs2" % "1.8.2" % "test"
-    case "2.9.0"  => "org.specs2" %% "specs2" % "1.7.1" % "test"
     case x if x.startsWith("2.10") => "org.specs2" %% "specs2" % "1.14" % "test"
     case x if x.startsWith("2.11") => "org.specs2" %% "specs2" % "2.4.1" % "test"
     case _ => "org.specs2" %% "specs2" % "1.8.2" % "test"
