@@ -17,10 +17,10 @@ lazy val settings =
     crossScalaVersions := Seq("2.10.5", scala211, "2.12.1"), // After 2.10 ,binaries are compatible.So don't need to crossCompile.(tests are passed even comment outed versions.)
     resolvers ++= Seq(Resolver.mavenLocal),
     parallelExecution in Test := false,
-    scalacOptions += {
+    scalacOptions ++= {
       scalaVersion.value match {
-        case v if v.startsWith("2.12") => "-target:jvm-1.8"
-        case _                         => "-target:jvm-1.7"
+        case v if v.startsWith("2.12") => Seq("-target:jvm-1.8")
+        case _                         => Seq("-target:jvm-1.7")
       }
     }
   )
