@@ -5,8 +5,8 @@
 
 ## Quick Start
 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.msgpack/msgpack-scala/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.msgpack/msgpack-scala/)
-[![Javadoc](https://javadoc-emblem.rhcloud.com/doc/org.msgpack/msgpack-scala/badge.svg)](http://www.javadoc.io/doc/org.msgpack/msgpack-scala)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.msgpack/msgpack-scala_2.12/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.msgpack/msgpack-scala_2.12/)
+[![Javadoc](https://javadoc-emblem.rhcloud.com/doc/org.msgpack/msgpack-scala_2.12/badge.svg)](http://www.javadoc.io/doc/org.msgpack/msgpack-scala_2.12)
 
 ```
 libraryDependencies += "org.msgpack" %% "msgpack-scala" % "(version)"
