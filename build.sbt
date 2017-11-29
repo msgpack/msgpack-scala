@@ -28,7 +28,7 @@ val buildSettings = Seq[Setting[_]](
   resolvers ++= Seq(
     Resolver.sonatypeRepo("releases"),
     Resolver.sonatypeRepo("snapshots")
-  ),  
+  ),
   // JVM options for building
   scalacOptions ++= Seq("-encoding", "UTF-8", "-deprecation", "-unchecked", "-feature"),
   // Release settings
@@ -42,38 +42,38 @@ val buildSettings = Seq[Setting[_]](
   releaseCrossBuild := true,
   releaseTagName := { (version in ThisBuild).value },
   releaseProcess := Seq[ReleaseStep](
-          checkSnapshotDependencies,
-          inquireVersions,
-          runClean,
-          runTest,
-          setReleaseVersion,
-          commitReleaseVersion,
-          tagRelease,
-          releaseStepCommand("publishSigned"),
-          setNextVersion,
-          commitNextVersion,
-          releaseStepCommand("sonatypeReleaseAll"),
-          pushChanges
-        )
+    checkSnapshotDependencies,
+    inquireVersions,
+    runClean,
+    runTest,
+    setReleaseVersion,
+    commitReleaseVersion,
+    tagRelease,
+    releaseStepCommand("publishSigned"),
+    setNextVersion,
+    commitNextVersion,
+    releaseStepCommand("sonatypeReleaseAll"),
+    pushChanges
+  )
 )
 
 // Project settings
 lazy val root = Project(id = "msgpack-scala-root", base = file("."))
-        .settings(
-          buildSettings,
-          // Do not publish the root project
-          publishArtifact := false,
-          publish := {},
-          publishLocal := {}
-        ).aggregate(msgpackScala)
+  .settings(
+    buildSettings,
+    // Do not publish the root project
+    publishArtifact := false,
+    publish := {},
+    publishLocal := {}
+  ).aggregate(msgpackScala)
 
 lazy val msgpackScala = Project(id = "msgpack-scala", base = file("msgpack-scala"))
-        .settings(
-          buildSettings,
-          description := "MesasgePack for Scala",
-          libraryDependencies ++= Seq(
-            "org.msgpack" % "msgpack-core" % "0.8.13",
-            "org.scalatest" %% "scalatest" % "3.0.4" % "test",
-            "org.scalacheck" %% "scalacheck" % "1.13.5" % "test"
-          )
-        )
+  .settings(
+    buildSettings,
+    description := "MesasgePack for Scala",
+    libraryDependencies ++= Seq(
+      "org.msgpack"    % "msgpack-core" % "0.8.13",
+      "org.scalatest"  %% "scalatest"   % "3.0.4" % "test",
+      "org.scalacheck" %% "scalacheck"  % "1.13.5" % "test"
+    )
+  )
