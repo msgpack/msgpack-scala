@@ -12,6 +12,7 @@
 libraryDependencies += "org.msgpack" %% "msgpack-scala" % "(version)"
 ```
 
+General usage is the same with msgpack-java. See this [example code (Java)](https://github.com/msgpack/msgpack-java/blob/develop/msgpack-core/src/test/java/org/msgpack/core/example/MessagePackExample.java).
 
 ## For MessagePack Developers
 
