@@ -1,17 +1,33 @@
-language: scala
-
-jdk:
- - oraclejdk7
- - oraclejdk8
-
 sudo: false
 
-scala:
-  - 2.11.6
-  - 2.10.5
-  - 2.9.3
+cache:
+  directories:
+    - $HOME/.ivy2/cache
+    - $HOME/.sbt
+    - $HOME/.coursier
+
+before_cache:
+  # Cleanup the cached directories to avoid unnecessary cache updates
+  - find $HOME/.ivy2/cache -name "ivydata-*.properties" -print -delete
+  - find $HOME/.sbt        -name "*.lock"               -print -delete
+
+language: scala
 
 matrix:
-  exclude:
-    - scala: "2.9.3" # Scala 2.9.x does not support java8
-      jdk: oraclejdk8
+  include:
+  # Code forfmat test
+  - env: PROJECT=code-format
+    jdk: oraclejdk8
+    script: ./scalafmt --test
+  # Scala 2.12 + code coverage test
+  - env: SCALA_VERSION=2.12.4
+    jdk: oraclejdk8
+    script:
+      - ./sbt ++$SCALA_VERSION "; coverage; test; coverageReport"
+      - ./sbt coverageAggregate && bash <(curl -s https://codecov.io/bash)
+  - env: SCALA_VERSION=2.13.0-M2
+    jdk: oraclejdk8
+    script: ./sbt ++$SCALA_VERSION test
+  - env: SCALA_VERSION=2.11.11
+    jdk: oraclejdk8
+    script: ./sbt ++$SCALA_VERSION test
